@@ -13,8 +13,15 @@ class BlockDestroyListener : Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     fun onBlockPlace(event: BlockBreakEvent) {
-        if (event.block.type == Material.WET_SPONGE) {
+        if (event.block.type == Material.DRIED_KELP_BLOCK) {
             SchipaoLB.luckyblocks.add(event.block.position)
+
+            event.block.world.playSound(
+                event.block.location,
+                Sound.BLOCK_STONE_PLACE,
+                1f,
+                1f
+            )
         }
     }
     @EventHandler(priority = EventPriority.HIGH)
