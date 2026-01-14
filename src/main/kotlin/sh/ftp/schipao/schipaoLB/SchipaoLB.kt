@@ -5,7 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin
 class SchipaoLB : JavaPlugin() {
 
     override fun onEnable() {
-        // Plugin startup logic
+        server.pluginManager.registerEvents(BlockDestroyListener(), this)
     }
 
     override fun onDisable() {
