@@ -1,0 +1,4 @@
+name: schipaoLB
+version: '1.0-SNAPSHOT'
+main: sh.ftp.schipao.schipaoLB.SchipaoLB
+api-version: '1.21'
