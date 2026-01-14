@@ -1,9 +1,7 @@
 package sh.ftp.schipao.schipaoLB
 
-import org.bukkit.plugin.java.JavaPlugin
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
+import org.bukkit.plugin.java.JavaPlugin
 
 /*
   "texture": "",
@@ -156,22 +154,14 @@ data class Drop(val item: String, val quantity: Int, val name: String, val encha
 @Serializable
 data class Data(val drops: List<Map<String, Drop>>)
 
-class SchipaoLB : JavaPlugin() {
+class SchipaoLB() : JavaPlugin() {
+
+    companion object {
+        val luckyblocks: LBStorage = mutableSetOf()
+    }
 
     override fun onEnable() {
         server.pluginManager.registerEvents(BlockDestroyListener(), this)
-        println(Json.decodeFromString<Data>(
-            """{
-            |"drops": [
-            |  {
-            |    "item": "item", 
-            |    "quantity": 0, 
-            |    "name": "name", 
-            |    "enchantment": []
-            |  }
-            |]
-            |}""".trimMargin()
-        ))
     }
 
     override fun onDisable() {
