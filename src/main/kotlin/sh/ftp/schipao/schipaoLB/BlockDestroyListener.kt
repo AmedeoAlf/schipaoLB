@@ -6,15 +6,21 @@ import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.block.Block
+import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.inventory.ItemStack
 
 val Block.position: BlockPosition get() = Position.block(x, y, z)
 
 val outcomes = listOf(
-    TeleportOutcome(10.0), MessageOutcome { Component.text("IDK immagina sia un altro drop casuale") })
+    TeleportOutcome(10.0),
+    MessageOutcome { Component.text("IDK immagina sia un altro drop casuale") },
+    ItemDropOutcome(
+        listOf(
+        ItemStack.of(Material.NETHERITE_SWORD).apply { addEnchantment(Enchantment.SHARPNESS, 200) })))
 
 class BlockDestroyListener : Listener {
 
