@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack
 val Block.position: BlockPosition get() = Position.block(x, y, z)
 
 val outcomes = listOf(
-    TeleportOutcome(10.0),
+    TeleportOutcome(30.0),
     MessageOutcome { Component.text("IDK immagina sia un altro drop casuale") },
     ItemDropOutcome(
         listOf(
