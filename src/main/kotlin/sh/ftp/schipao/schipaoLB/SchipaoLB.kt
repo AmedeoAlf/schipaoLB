@@ -156,10 +156,6 @@ data class Data(val drops: List<Map<String, Drop>>)
 
 class SchipaoLB() : JavaPlugin() {
 
-    companion object {
-        val luckyblocks: LBStorage = mutableSetOf()
-    }
-
     override fun onEnable() {
         server.pluginManager.registerEvents(BlockDestroyListener(), this)
     }
