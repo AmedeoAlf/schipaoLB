@@ -39,7 +39,7 @@ fun fromSerializedString(str: String): ItemStack {
         itemMeta = itemMeta.apply {
             if (itemDisplayName != "") displayName(Component.text(itemDisplayName))
             if (itemLore != null && itemLore != "") lore(listOf(Component.text(itemLore)))
-            if (this is Damageable && itemDamage != null) damage = itemDamage.toInt()
+            if (this is Damageable && itemDamage != null) damage = runCatching { itemDamage.toInt() }.getOrDefault(0)
         }
         enchantments?.split("\n")?.forEach {
             val (enchant, level) = it.split("/") + List(1) { "1" }
