@@ -5,14 +5,10 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
-import net.kyori.adventure.text.Component
-import org.bukkit.Material
-import org.bukkit.enchantments.Enchantment
-import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.Damageable
 
+/*
 val outcomes = listOf(
-    TeleportOutcome(30.0), MessageOutcome { Component.text("IDK immagina sia un altro drop casuale") }, ItemDropOutcome(
+    TeleportOutcome(30.0), MessageOutcome("IDK immagina sia un altro drop casuale"), ItemDropOutcome(
         listOf(
             ItemStack.of(Material.GOLDEN_SWORD).apply {
                 itemMeta = (itemMeta as Damageable).apply {
@@ -23,6 +19,7 @@ val outcomes = listOf(
             })
     )
 )
+*/
 
 val lbOutcomeModule = SerializersModule {
     polymorphic(LBOutcome::class) {
@@ -44,3 +41,6 @@ fun serialize(outcome: LBOutcome): String = json.encodeToString(
 fun deserialize(str: String): LBOutcome = json.decodeFromString(
     PolymorphicSerializer(LBOutcome::class), str
 )
+
+val outcomes =
+    json.decodeFromString<Collection<LBOutcome>>("""[{"type":"teleport","yDistance":30.0}, {"type":"message","message":"IDK immagina sia un altro drop casuale"}, {"type":"ItemDropOutcome","items":["GOLDEN_SWORD;Hai una chance;;minecraft:sharpness/200;31"]}]""")

@@ -8,8 +8,8 @@ import org.bukkit.entity.Player
 
 @Serializable
 @SerialName("message")
-class MessageOutcome(val message: () -> Component): LBOutcome {
+class MessageOutcome(val message: String): LBOutcome {
     override fun run(player: Player, position: BlockPosition) {
-        player.sendMessage(message)
+        player.sendMessage { Component.text(message) }
     }
 }
