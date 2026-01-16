@@ -9,13 +9,14 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.block.BlockPlaceEvent
 
 val Block.position: BlockPosition get() = Position.block(x, y, z)
 
 class BlockDestroyListener(val block: Material, val outcomes: Collection<LBOutcome>) : Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
-    fun onBlockPlace(event: BlockBreakEvent) {
+    fun onBlockPlace(event: BlockPlaceEvent) {
         if (event.block.type == block) {
             event.block.world.playSound(
                 event.block.location, Sound.BLOCK_STONE_PLACE, 1f, 1f
