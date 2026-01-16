@@ -1,5 +1,10 @@
 package sh.ftp.schipao.schipaoLB
 
+import kotlinx.serialization.PolymorphicSerializer
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
@@ -19,3 +24,23 @@ val outcomes = listOf(
     )
 )
 
+val lbOutcomeModule = SerializersModule {
+    polymorphic(LBOutcome::class) {
+        subclass(TeleportOutcome::class)
+        subclass(ItemDropOutcome::class)
+        subclass(MessageOutcome::class)
+    }
+}
+
+val json = Json {
+    serializersModule = lbOutcomeModule
+    classDiscriminator = "type"
+}
+
+fun serialize(outcome: LBOutcome): String = json.encodeToString(
+    PolymorphicSerializer(LBOutcome::class), outcome
+)
+
+fun deserialize(str: String): LBOutcome = json.decodeFromString(
+    PolymorphicSerializer(LBOutcome::class), str
+)

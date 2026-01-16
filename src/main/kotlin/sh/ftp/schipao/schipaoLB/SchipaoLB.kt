@@ -1,6 +1,7 @@
 package sh.ftp.schipao.schipaoLB
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import org.bukkit.plugin.java.JavaPlugin
 
 /*
@@ -158,6 +159,7 @@ class SchipaoLB() : JavaPlugin() {
 
     override fun onEnable() {
         server.pluginManager.registerEvents(BlockDestroyListener(), this)
+        println(Json.encodeToString(outcomes))
     }
 
     override fun onDisable() {
