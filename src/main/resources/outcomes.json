@@ -10,7 +10,154 @@
   {
     "type": "itemdrop",
     "items": [
-      "GOLDEN_SWORD;Hai una chance;;minecraft:sharpness/200;31"
+      "CHAINMAIL_HELMET;;;minecraft:protection/1",
+      "CHAINMAIL_CHESTPLATE;;;minecraft:protection/1",
+      "CHAINMAIL_LEGGINGS;;;minecraft:protection/1",
+      "CHAINMAIL_BOOTS;;;minecraft:protection/1"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "DIAMOND_HELMET",
+      "DIAMOND_CHESTPLATE"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "DIAMOND_LEGGINGS",
+      "DIAMOND_BOOTS"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "NETHERITE_HELMET"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "NETHERITE_CHESTPLATE"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "NETHERITE_LEGGINGS"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "NETHERITE_BOOTS"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "WOODEN_SWORD;;Buona Fortuna Soldato",
+      "LEATHER_HELMET",
+      "LEATHER_CHESTPLATE",
+      "LEATHER_LEGGINGS",
+      "LEATHER_BOOTS"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "GOLDEN_LEGGINGS;;Corri lentamente mi raccomando;minecraft:swift_sneak/100"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "TURTLE_HELMET"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "GOLDEN_SWORD;Hai una chance;UCCIDI un nemico, mi dispiace non abbiamo budget;minecraft:sharpness/200;31"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "IRON_SWORD",
+      "IRON_AXE",
+      "IRON_PICKAXE",
+      "IRON_SHOVEL"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "NETHERITE_HOE;COMBATTI"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "NETHERITE_SWORD"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "NETHERITE_AXE"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "DIAMOND_SWORD",
+      "GOLDEN_APPLE"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "WIND_CHARGE",
+      "WIND_CHARGE",
+      "WIND_CHARGE",
+      "WIND_CHARGE",
+      "WIND_CHARGE",
+      "WIND_CHARGE",
+      "WIND_CHARGE",
+      "WIND_CHARGE",
+      "WIND_CHARGE",
+      "WIND_CHARGE",
+      "WIND_CHARGE",
+      "WIND_CHARGE"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "SHIELD",
+      "COPPER_AXE",
+      "COPPER_PICKAXE"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "TRIDENT"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "TOTEM_OF_UNDYING"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "BOW;;;minecraft:infinity",
+      "ARROW"
     ]
   }
 ]
