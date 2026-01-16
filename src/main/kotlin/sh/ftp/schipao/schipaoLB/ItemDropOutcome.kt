@@ -52,7 +52,7 @@ fun fromSerializedString(str: String): ItemStack {
 }
 
 @Serializable(with = ItemDropOutcomeSerializer::class)
-@SerialName("explosion")
+@SerialName("itemdrop")
 class ItemDropOutcome(val items: Collection<ItemStack>) : LBOutcome {
     override fun run(player: Player, position: BlockPosition) {
         player.give(items, true)
@@ -63,7 +63,7 @@ class ItemDropOutcomeSerializer : KSerializer<ItemDropOutcome> {
     private val itemListSerializer = ListSerializer(String.serializer())
 
     override val descriptor: SerialDescriptor
-        get() = buildClassSerialDescriptor("ItemDropOutcome") {
+        get() = buildClassSerialDescriptor("itemdrop") {
             element("items", itemListSerializer.descriptor)
         }
 

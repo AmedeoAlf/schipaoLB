@@ -8,7 +8,7 @@
     "message": "IDK immagina sia un altro drop casuale"
   },
   {
-    "type": "ItemDropOutcome",
+    "type": "itemdrop",
     "items": [
       "GOLDEN_SWORD;Hai una chance;;minecraft:sharpness/200;31"
     ]
