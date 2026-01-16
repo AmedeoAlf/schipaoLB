@@ -26,6 +26,7 @@ class BlockDestroyListener : Listener {
     @EventHandler(priority = EventPriority.HIGH)
     fun onBlockBreak(event: BlockBreakEvent) {
         if (event.block.type == Material.DRIED_KELP_BLOCK) {
+            event.isDropItems = false
             event.block.world.playSound(
                 event.block.location, Sound.BLOCK_STONE_BREAK, 1f, 1f
             )
