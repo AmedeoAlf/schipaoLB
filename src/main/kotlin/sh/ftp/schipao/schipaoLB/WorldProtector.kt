@@ -41,19 +41,16 @@ class WorldProtector(val world: World) : Listener {
 
     @EventHandler
     fun onBlockBreak(event: BlockBreakEvent) {
-        println("Block break")
         updateBlock(event.block, event.block.type)
     }
 
     @EventHandler
     fun onBlockExplode(event: BlockExplodeEvent) {
-        println("Block explode")
         updateBlock(event.block, event.block.type)
     }
 
     @EventHandler
     fun onEntityExplode(event: EntityExplodeEvent) {
-        println("Entity explode")
         event.blockList().forEach {
             updateBlock(it, it.type)
         }
@@ -61,7 +58,6 @@ class WorldProtector(val world: World) : Listener {
 
     @EventHandler
     fun onBlockDestroy(event: BlockDestroyEvent) {
-        println("Block destroy")
         updateBlock(event.block, event.block.type)
     }
 
@@ -70,12 +66,10 @@ class WorldProtector(val world: World) : Listener {
         mutatedChunks.forEach { (key, data) ->
             val chunk = world.getChunkAt(key)
             world.loadChunk(chunk)
-            println("Restoring chunk x=${chunk.x} z=${chunk.z}")
+            println("Restoring chunk x=${chunk.x} z=${chunk.z} (${data.blocks.size} actions)")
 
-            data.blocks.toList().asReversed().forEach { (material, chunkPos) ->
+            data.blocks.reversed().forEach { (material, chunkPos) ->
                 chunk.blockFromChunkPos(chunkPos).type = material
-                val block = chunk.blockFromChunkPos(chunkPos)
-                println("Restoring block ${block.position} to $material")
             }
             apply()
         }
