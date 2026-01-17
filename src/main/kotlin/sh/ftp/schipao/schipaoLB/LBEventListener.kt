@@ -9,7 +9,10 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.block.BlockBurnEvent
+import org.bukkit.event.block.BlockExplodeEvent
 import org.bukkit.event.block.BlockPlaceEvent
+import org.bukkit.event.entity.EntityExplodeEvent
 
 val Block.position: BlockPosition get() = Position.block(x, y, z)
 
@@ -21,6 +24,25 @@ class LBEventListener(val block: Material, val outcomes: Collection<LBOutcome>) 
             event.block.world.playSound(
                 event.block.location, Sound.BLOCK_STONE_PLACE, 1f, 1f
             )
+        }
+    }
+
+    @EventHandler
+    fun onEntityExplode(event: EntityExplodeEvent) {
+        event.blockList().removeIf { it.type == block }
+    }
+
+    @EventHandler
+    fun onBlockExplode(event: BlockExplodeEvent) {
+        if (event.explodedBlockState.type == block) {
+            event.isCancelled = true
+        }
+    }
+
+    @EventHandler
+    fun onBlockBurn(event: BlockBurnEvent) {
+        if (event.block.type == block) {
+            event.isCancelled = true
         }
     }
 
