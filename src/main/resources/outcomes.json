@@ -67,7 +67,7 @@
   {
     "type": "itemdrop",
     "items": [
-      "GOLDEN_LEGGINGS;Barcollo ma non mollo;Corri lentamente mi raccomando;minecraft:swift_sneak/100"
+      "GOLDEN_LEGGINGS;Barcollo ma non mollo;Corri lentamente mi raccomando;minecraft:swift_sneak/150"
     ]
   },
   {
@@ -203,6 +203,12 @@
     "type": "itemdrop",
     "items": [
       "FIREWORK_ROCKET/12"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "OBSIDIAN/20"
     ]
   }
 ]
