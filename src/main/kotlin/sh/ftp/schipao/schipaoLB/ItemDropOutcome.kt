@@ -43,8 +43,8 @@ fun fromSerializedString(str: String): ItemStack {
             if (itemLore != "") lore(listOf(Component.text(itemLore)))
             if (this is Damageable && itemDamage != "") damage = runCatching { itemDamage.toInt() }.getOrDefault(0)
         }
-        enchantments.split("\n").forEach {
-            val (enchant, level) = it.split("/") + List(1) { "1" }
+        enchantments.split("\n").filter { it != "" }.forEach {
+            val (enchant, level) = it.split("/") + listOf("1")
             val key = TypedKey.create(RegistryKey.ENCHANTMENT, Key.key(enchant))
             addUnsafeEnchantment(
                 RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(key)!!, level.toInt()
