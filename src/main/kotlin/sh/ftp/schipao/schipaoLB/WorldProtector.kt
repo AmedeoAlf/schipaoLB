@@ -71,13 +71,11 @@ class WorldProtector(val world: World) : Listener {
             data.blocks.reversed().forEach { (material, chunkPos) ->
                 chunk.blockFromChunkPos(chunkPos).type = material
             }
-            apply()
         }
+        mutatedChunks.clear()
     }
 
     fun apply() {
         mutatedChunks.clear()
     }
 }
-
-
