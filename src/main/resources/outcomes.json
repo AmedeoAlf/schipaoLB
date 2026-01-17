@@ -10,10 +10,10 @@
   {
     "type": "itemdrop",
     "items": [
-      "CHAINMAIL_HELMET;;;minecraft:protection/1",
-      "CHAINMAIL_CHESTPLATE;;;minecraft:protection/1",
-      "CHAINMAIL_LEGGINGS;;;minecraft:protection/1",
-      "CHAINMAIL_BOOTS;;;minecraft:protection/1"
+      "CHAINMAIL_HELMET;;;minecraft:protection",
+      "CHAINMAIL_CHESTPLATE;;;minecraft:protection",
+      "CHAINMAIL_LEGGINGS;;;minecraft:protection",
+      "CHAINMAIL_BOOTS;;;minecraft:protection"
     ]
   },
   {
@@ -119,18 +119,7 @@
   {
     "type": "itemdrop",
     "items": [
-      "WIND_CHARGE",
-      "WIND_CHARGE",
-      "WIND_CHARGE",
-      "WIND_CHARGE",
-      "WIND_CHARGE",
-      "WIND_CHARGE",
-      "WIND_CHARGE",
-      "WIND_CHARGE",
-      "WIND_CHARGE",
-      "WIND_CHARGE",
-      "WIND_CHARGE",
-      "WIND_CHARGE"
+      "WIND_CHARGE/12"
     ]
   },
   {
