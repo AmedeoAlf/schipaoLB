@@ -8,6 +8,7 @@ import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.block.BlockBurnEvent
 import org.bukkit.event.block.BlockExplodeEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityExplodeEvent
@@ -46,6 +47,11 @@ class WorldProtector(val world: World) : Listener {
 
     @EventHandler
     fun onBlockExplode(event: BlockExplodeEvent) {
+        updateBlock(event.block, event.explodedBlockState.type)
+    }
+
+    @EventHandler
+    fun onBlockBurn(event: BlockBurnEvent) {
         updateBlock(event.block, event.block.type)
     }
 
