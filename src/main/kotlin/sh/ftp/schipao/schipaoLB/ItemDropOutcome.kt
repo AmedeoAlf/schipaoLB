@@ -20,7 +20,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
 
 fun ItemStack.toSerializedString(): String = listOf(
-    type.name,
+    "${type.name}/${amount}",
     displayName().toString(),
     lore()?.joinToString("\n") ?: "",
     enchantments.map { "${it.key.key}/${it.value}" }.joinToString("\n"),
@@ -31,17 +31,19 @@ fun ItemStack.toSerializedString(): String = listOf(
 
 
 fun fromSerializedString(str: String): ItemStack {
-    val (type, itemDisplayName, itemLore, enchantments, itemDamage) = str.split(";").map {
+    val fields = str.split(";").map {
         it.trim().replace("\\n", "\n").replace("\\,", ";")
-    }.let { it + List(5 - it.size) { null } }
-    return ItemStack.of(Material.getMaterial(type!!)!!).apply {
-        if (itemDisplayName == null) return@apply
+    }
+    val (typeAndAmount, itemDisplayName, itemLore, enchantments, itemDamage) = fields + List(5) { "" }
+
+    val (type, amount) = typeAndAmount.split("/") + listOf("1")
+    return ItemStack.of(Material.getMaterial(type)!!, amount.toInt()).apply {
         itemMeta = itemMeta.apply {
             if (itemDisplayName != "") displayName(Component.text(itemDisplayName))
-            if (itemLore != null && itemLore != "") lore(listOf(Component.text(itemLore)))
-            if (this is Damageable && itemDamage != null) damage = runCatching { itemDamage.toInt() }.getOrDefault(0)
+            if (itemLore != "") lore(listOf(Component.text(itemLore)))
+            if (this is Damageable && itemDamage != "") damage = runCatching { itemDamage.toInt() }.getOrDefault(0)
         }
-        enchantments?.split("\n")?.forEach {
+        enchantments.split("\n").forEach {
             val (enchant, level) = it.split("/") + List(1) { "1" }
             val key = TypedKey.create(RegistryKey.ENCHANTMENT, Key.key(enchant))
             addUnsafeEnchantment(
