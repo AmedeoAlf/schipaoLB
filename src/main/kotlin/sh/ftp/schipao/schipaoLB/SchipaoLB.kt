@@ -8,18 +8,22 @@ import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 
 
-class SchipaoLB() : JavaPlugin() {
+class SchipaoLB : JavaPlugin() {
+    lateinit var protector: WorldProtector
 
     override fun onEnable() {
-        server.pluginManager.registerEvents(BlockDestroyListener(Material.DRIED_KELP_BLOCK, loadOutcomes()), this)
+        protector = WorldProtector(server.respawnWorld)
+        server.pluginManager.registerEvents(LBEventListener(Material.DRIED_KELP_BLOCK, loadOutcomes()), this)
+        server.pluginManager.registerEvents(protector, this)
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) {
             it.registrar().register(
-                worldProtectorCmd(WorldProtector(server.respawnWorld))
+                worldProtectorCmd(protector)
             )
         }
     }
 
     override fun onDisable() {
+        protector.restore()
     }
 
     @OptIn(ExperimentalSerializationApi::class)
