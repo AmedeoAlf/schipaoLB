@@ -13,7 +13,7 @@ import org.bukkit.event.block.BlockPlaceEvent
 
 val Block.position: BlockPosition get() = Position.block(x, y, z)
 
-class BlockDestroyListener(val block: Material, val outcomes: Collection<LBOutcome>) : Listener {
+class LBEventListener(val block: Material, val outcomes: Collection<LBOutcome>) : Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     fun onBlockPlace(event: BlockPlaceEvent) {
