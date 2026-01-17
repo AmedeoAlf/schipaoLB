@@ -32,7 +32,7 @@ class SchipaoLB : JavaPlugin() {
 
         if (!file.exists()) {
             file.parentFile.mkdirs()
-            saveResource("outcomes.json", false)
+            saveResource("outcomes.json", true)
         }
 
         return json.decodeFromStream(file.inputStream())
