@@ -5,7 +5,7 @@
   },
   {
     "type": "message",
-    "message": "IDK immagina sia un altro drop casuale"
+    "message": "No Luck?"
   },
   {
     "type": "itemdrop",
@@ -67,7 +67,7 @@
   {
     "type": "itemdrop",
     "items": [
-      "GOLDEN_LEGGINGS;;Corri lentamente mi raccomando;minecraft:swift_sneak/100"
+      "GOLDEN_LEGGINGS;Barcollo ma non mollo;Corri lentamente mi raccomando;minecraft:swift_sneak/100"
     ]
   },
   {
@@ -106,7 +106,7 @@
   {
     "type": "itemdrop",
     "items": [
-      "NETHERITE_AXE"
+      "NETHERITE_AXE;Leggermente Gay"
     ]
   },
   {
@@ -125,7 +125,7 @@
   {
     "type": "itemdrop",
     "items": [
-      "SHIELD",
+      "SHIELD;Codardo",
       "COPPER_AXE",
       "COPPER_PICKAXE"
     ]
@@ -133,7 +133,7 @@
   {
     "type": "itemdrop",
     "items": [
-      "TRIDENT"
+      "TRIDENT;VAI POSEIDONE"
     ]
   },
   {
@@ -147,6 +147,62 @@
     "items": [
       "BOW;;;minecraft:infinity",
       "ARROW"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "DIAMOND/5",
+      "EMERALD/7",
+      "GOLD_INGOT/11",
+      "IRON_INGOT/4"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "CREEPER_SPAWN_EGG/2",
+      "ZOMBIE_SPAWN_EGG/3"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "COBBLESTONE/64"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "DIRT/64",
+      "DIRT/64"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "NETHERRACK/24",
+      "NETHER_QUARTZ_ORE/13",
+      "NETHER_BRICKS/7",
+      "RED_NETHER_BRICKS/9"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "CHEST/3"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "ELYTRA"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "FIREWORK_ROCKET/12"
     ]
   }
 ]
