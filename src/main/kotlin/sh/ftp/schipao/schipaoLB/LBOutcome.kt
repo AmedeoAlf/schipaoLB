@@ -1,14 +1,14 @@
 package sh.ftp.schipao.schipaoLB
 
-import io.papermc.paper.math.BlockPosition
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
+import org.bukkit.block.Block
 import org.bukkit.entity.Player
 
 interface LBOutcome {
-    fun run(player: Player, position: BlockPosition)
+    fun run(player: Player, block: Block)
 }
 
 val lbOutcomeModule = SerializersModule {

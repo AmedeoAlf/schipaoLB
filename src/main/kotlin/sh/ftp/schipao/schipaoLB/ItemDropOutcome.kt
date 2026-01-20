@@ -1,6 +1,5 @@
 package sh.ftp.schipao.schipaoLB
 
-import io.papermc.paper.math.BlockPosition
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import io.papermc.paper.registry.TypedKey
@@ -15,6 +14,7 @@ import kotlinx.serialization.encoding.*
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
+import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
@@ -56,7 +56,7 @@ fun fromSerializedString(str: String): ItemStack {
 @Serializable(with = ItemDropOutcomeSerializer::class)
 @SerialName("itemdrop")
 class ItemDropOutcome(val items: Collection<ItemStack>) : LBOutcome {
-    override fun run(player: Player, position: BlockPosition) {
+    override fun run(player: Player, block: Block) {
         player.give(items, true)
     }
 }

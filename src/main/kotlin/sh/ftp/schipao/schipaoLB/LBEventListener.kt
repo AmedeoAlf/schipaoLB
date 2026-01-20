@@ -54,7 +54,7 @@ class LBEventListener(val block: Material, val outcomes: Collection<LBOutcome>) 
                 event.block.location, Sound.BLOCK_STONE_BREAK, 1f, 1f
             )
 
-            outcomes.random().run(event.player, event.block.position)
+            outcomes.random().run(event.player, event.block)
         }
     }
 }
