@@ -34,6 +34,8 @@ class SchipaoLB : JavaPlugin() {
             file.parentFile.mkdirs()
             saveResource("outcomes.json", true)
         }
+        // FIXME: just for development
+        saveResource("outcomes.json", true)
 
         return json.decodeFromStream(file.inputStream())
     }

@@ -210,5 +210,10 @@
     "items": [
       "OBSIDIAN/20"
     ]
+  },
+  {
+    "type": "mob",
+    "entity": "creeper",
+    "passenger": null
   }
 ]
