@@ -213,7 +213,10 @@
   },
   {
     "type": "mob",
-    "entity": "creeper",
-    "passenger": null
+    "entities": ["CREEPER"]
+  },
+  {
+    "type": "mob",
+    "entities": ["PIG", "PIG", "PIG", "PIG"]
   }
 ]

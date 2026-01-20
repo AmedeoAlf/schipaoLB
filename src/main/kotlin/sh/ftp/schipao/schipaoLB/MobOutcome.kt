@@ -9,15 +9,11 @@ import org.bukkit.entity.Player
 
 @SerialName("mob")
 @Serializable
-class MobOutcome(val entity: String, val passenger: MobOutcome?) : LBOutcome {
+class MobOutcome(val entities: List<String>) : LBOutcome {
     override fun run(player: Player, block: Block) {
-        var entity: Entity? = null
-        var curr: MobOutcome? = this
-        while (curr != null) {
-            val newEntity = block.world.spawnEntity(block.location, EntityType.valueOf(curr.entity))
-            entity?.addPassenger(newEntity)
-            entity = newEntity
-            curr = curr.passenger
-        }
+        entities
+            .map { block.world.spawnEntity(block.location, EntityType.valueOf(it)) }
+            .windowed(2)
+            .forEach { (a, b) -> a.addPassenger(b) }
     }
 }
