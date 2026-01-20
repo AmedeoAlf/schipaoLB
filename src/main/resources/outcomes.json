@@ -217,6 +217,10 @@
   },
   {
     "type": "mob",
-    "entities": ["PIG", "PIG", "PIG", "PIG"]
+    "entities": ["PIG", "PIG", "PIG", "PIG", "PIG", "PIG", "PIG", "PIG", "PIG", "PIG"]
+  },
+  {
+    "type": "mob",
+    "entities": ["GHAST", "RAVAGER", "COW", "PIG", "BLAZE", "CREEPER", "SKELETON", "CHICKEN"]
   }
 ]
