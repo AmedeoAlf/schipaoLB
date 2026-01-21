@@ -214,7 +214,8 @@
   {
     "type": "mob",
     "entities": [
-      "CREEPER/4"
+      "CREEPER/4",
+      "LIGHTNING_BOLT"
     ]
   },
   {
@@ -243,8 +244,9 @@
         "yDistance": 40.0
       },
       {
-        "type": "message",
-        "message": "Be quick..."
+        "type": "title",
+        "title": "Be quick...",
+        "subtitle": "§3C'è un secchio d'acqua nel tuo inventario ;-)"
       }
     ]
   },

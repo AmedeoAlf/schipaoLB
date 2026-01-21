@@ -23,7 +23,7 @@ class MobOutcome(val entities: List<String>) : LBOutcome {
                     .forEach { (a, b) -> a.addPassenger(b) }
             } else {
                 val (type, qty) = parseQuantity(it)
-                (0..qty).forEach { _ ->
+                (1..qty).forEach { _ ->
                     block.world.spawnEntity(block.location, EntityType.valueOf(type))
                         .apply { teleport(this.location.add(0.0, height, 0.0)) }
                 }
