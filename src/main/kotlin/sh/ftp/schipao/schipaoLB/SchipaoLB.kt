@@ -35,6 +35,7 @@ class SchipaoLB : JavaPlugin() {
             saveResource("outcomes.json", true)
         }
         // FIXME: just for development
+        file.delete()
         saveResource("outcomes.json", true)
 
         return json.decodeFromStream(file.inputStream())
