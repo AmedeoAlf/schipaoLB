@@ -22,7 +22,7 @@ class MobOutcome(val entities: List<String>) : LBOutcome {
                             .apply { teleport(this.location.add(0.0, height, 0.0)) }
                     }
                     .windowed(2)
-                    .map { (a, b) -> a.addPassenger(b) }
+                    .forEach { (a, b) -> a.addPassenger(b) }
             } else {
                 val (type, qty) = it.split("/") + "1"
                 (0..qty.toInt()).forEach { _ ->
