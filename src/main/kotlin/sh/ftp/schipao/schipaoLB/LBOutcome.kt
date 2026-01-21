@@ -17,6 +17,7 @@ val lbOutcomeModule = SerializersModule {
         subclass(ItemDropOutcome::class)
         subclass(MessageOutcome::class)
         subclass(MobOutcome::class)
+        subclass(MultiOutcome::class)
     }
 }
 
