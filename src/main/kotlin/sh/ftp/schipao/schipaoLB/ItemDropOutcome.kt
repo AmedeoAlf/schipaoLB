@@ -36,20 +36,23 @@ fun fromSerializedString(str: String): ItemStack {
     }
     val (typeAndAmount, itemDisplayName, itemLore, enchantments, itemDamage) = fields + List(5) { "" }
 
-    val (type, amount) = typeAndAmount.split("/") + listOf("1")
-    return ItemStack.of(Material.getMaterial(type)!!, amount.toInt()).apply {
+    val (type, amount) = parseQuantity(typeAndAmount)
+    return ItemStack.of(Material.getMaterial(type)!!, amount).apply {
         itemMeta = itemMeta.apply {
             if (itemDisplayName != "") displayName(Component.text(itemDisplayName))
             if (itemLore != "") lore(listOf(Component.text(itemLore)))
             if (this is Damageable && itemDamage != "") damage = runCatching { itemDamage.toInt() }.getOrDefault(0)
         }
-        enchantments.split("\n").filter { it != "" }.forEach {
-            val (enchant, level) = it.split("/") + listOf("1")
-            val key = TypedKey.create(RegistryKey.ENCHANTMENT, Key.key(enchant))
-            addUnsafeEnchantment(
-                RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(key)!!, level.toInt()
-            )
-        }
+        enchantments
+            .split("\n")
+            .filter { it != "" }
+            .forEach {
+                val (enchant, level) = parseQuantity(it)
+                val key = TypedKey.create(RegistryKey.ENCHANTMENT, Key.key(enchant))
+                addUnsafeEnchantment(
+                    RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(key)!!, level
+                )
+            }
     }
 }
 
