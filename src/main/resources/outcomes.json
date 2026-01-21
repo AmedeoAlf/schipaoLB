@@ -213,22 +213,30 @@
   },
   {
     "type": "mob",
-    "entities": ["CREEPER/4"]
+    "entities": [
+      "CREEPER/4"
+    ]
   },
   {
     "type": "mob",
-    "entities": ["PIG+PIG+PIG+PIG+PIG+PIG+PIG+PIG+PIG+PIG"]
+    "entities": [
+      "PIG+PIG+PIG+PIG+PIG+PIG+PIG+PIG+PIG+PIG"
+    ]
   },
   {
     "type": "mob",
-    "entities": ["GHAST+RAVAGER+COW+PIG+BLAZE+CREEPER+SKELETON+CHICKEN"]
+    "entities": [
+      "GHAST+RAVAGER+COW+PIG+BLAZE+CREEPER+SKELETON+CHICKEN"
+    ]
   },
   {
     "type": "multi",
     "outcomes": [
       {
         "type": "itemdrop",
-        "items": [ "WATER_BUCKET" ]
+        "items": [
+          "WATER_BUCKET"
+        ]
       },
       {
         "type": "teleport",
@@ -239,5 +247,12 @@
         "message": "Be quick..."
       }
     ]
+  },
+  {
+    "type": "effect",
+    "effect": "slowness",
+    "forTicks": 200,
+    "amplifier": 2,
+    "particles": true
   }
 ]
