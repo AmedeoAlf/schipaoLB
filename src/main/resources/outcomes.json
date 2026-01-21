@@ -222,5 +222,22 @@
   {
     "type": "mob",
     "entities": ["GHAST+RAVAGER+COW+PIG+BLAZE+CREEPER+SKELETON+CHICKEN"]
+  },
+  {
+    "type": "multi",
+    "outcomes": [
+      {
+        "type": "itemdrop",
+        "items": [ "WATER_BUCKET" ]
+      },
+      {
+        "type": "teleport",
+        "yDistance": 40.0
+      },
+      {
+        "type": "message",
+        "message": "Be quick..."
+      }
+    ]
   }
 ]
