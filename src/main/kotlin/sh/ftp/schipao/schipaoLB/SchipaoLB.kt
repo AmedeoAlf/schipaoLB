@@ -15,10 +15,12 @@ class SchipaoLB : JavaPlugin() {
     override fun onEnable() {
         protector = WorldProtector(server.respawnWorld)
         println("Initialized worldProtector")
+        loadConfig()
+        println("Loaded config")
         server.pluginManager.registerEvents(LBEventListener(Material.DRIED_KELP_BLOCK, loadOutcomes()), this)
-        print("Registered events [1/2]")
         server.pluginManager.registerEvents(protector, this)
-        println("\rRegistered events [2/2]")
+        server.pluginManager.registerEvents(SpawnListener(), this)
+        println("Registered events")
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) {
             it.registrar().register(
                 worldProtectorCmd(protector)
