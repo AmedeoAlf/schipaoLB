@@ -17,7 +17,7 @@ class MobOutcome(val entities: List<String>) : LBOutcome {
                 it.split("+")
                     .map {
                         block.world.spawnEntity(block.location, EntityType.valueOf(it))
-                            .apply { teleport(this.location.add(0.0, height, 0.0)) }
+                            .apply { teleport(block.location.add(0.0, height, 0.0)) }
                     }
                     .windowed(2)
                     .forEach { (a, b) -> a.addPassenger(b) }
