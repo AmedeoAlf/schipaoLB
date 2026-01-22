@@ -3,7 +3,6 @@ package sh.ftp.schipao.schipaoLB
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.title.Title
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
