@@ -6,7 +6,6 @@ import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.block.Block
 import org.bukkit.block.data.BlockData
-import org.bukkit.block.data.Directional
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
@@ -24,13 +23,13 @@ fun Chunk.blockFromChunkPos(pos: Int) = getBlock(
 )
 
 class WorldProtector(val world: World) : Listener {
-    data class OverriddenBlock(val material: Material, val chunkPos: Int, val data: BlockData?)
+    data class OverriddenBlock(val material: Material, val chunkPos: Int, val data: BlockData)
     class MutatedChunk {
         val blocks = mutableListOf<OverriddenBlock>()
         fun addBlock(b: Block, type: Material) = blocks.add(
             OverriddenBlock(
                 type, b.chunkPosition(),
-                (b.blockData as? Directional)
+                b.blockData
             )
         )
     }
@@ -84,10 +83,7 @@ class WorldProtector(val world: World) : Listener {
             data.blocks.reversed().forEach { (material, chunkPos, data) ->
                 chunk.blockFromChunkPos(chunkPos).apply {
                     type = material
-                    if (data != null) {
-                        println("Restored direction for block ${this.location}")
-                        blockData = data
-                    }
+                    blockData = data
                 }
             }
         }
