@@ -2,6 +2,7 @@ package sh.ftp.schipao.schipaoLB
 
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import org.bukkit.Material
 import org.bukkit.plugin.java.JavaPlugin
@@ -13,13 +14,17 @@ class SchipaoLB : JavaPlugin() {
 
     override fun onEnable() {
         protector = WorldProtector(server.respawnWorld)
+        println("Initialized worldProtector")
         server.pluginManager.registerEvents(LBEventListener(Material.DRIED_KELP_BLOCK, loadOutcomes()), this)
+        print("Registered events [1/2]")
         server.pluginManager.registerEvents(protector, this)
+        println("\rRegistered events [2/2]")
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) {
             it.registrar().register(
                 worldProtectorCmd(protector)
             )
         }
+        println("Registered commands")
     }
 
     override fun onDisable() {
@@ -39,6 +44,18 @@ class SchipaoLB : JavaPlugin() {
         saveResource("outcomes.json", true)
 
         return json.decodeFromStream(file.inputStream())
+    }
+
+    @OptIn(ExperimentalSerializationApi::class)
+    fun loadConfig() {
+        val file = File(dataFolder, "config.json")
+
+        if (!file.exists()) {
+            file.parentFile.mkdirs()
+            file.writeText(Json.encodeToString(Configuration.DEFAULT))
+        }
+
+        Configuration.current = Json.decodeFromStream(file.inputStream())
     }
 
 }
