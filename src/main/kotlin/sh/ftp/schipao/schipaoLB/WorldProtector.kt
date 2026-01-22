@@ -5,6 +5,8 @@ import org.bukkit.Chunk
 import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.block.Block
+import org.bukkit.block.data.BlockData
+import org.bukkit.block.data.Directional
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
@@ -22,17 +24,22 @@ fun Chunk.blockFromChunkPos(pos: Int) = getBlock(
 )
 
 class WorldProtector(val world: World) : Listener {
-    data class OverriddenBlock(val material: Material, val chunkPos: Int)
+    data class OverriddenBlock(val material: Material, val chunkPos: Int, val data: BlockData?)
     class MutatedChunk {
         val blocks = mutableListOf<OverriddenBlock>()
-        fun addBlock(b: Block, type: Material) = blocks.add(OverriddenBlock(type, b.chunkPosition()))
+        fun addBlock(b: Block, type: Material) = blocks.add(
+            OverriddenBlock(
+                type, b.chunkPosition(),
+                (b.blockData as? Directional)
+            )
+        )
     }
 
     val mutatedChunks = mutableMapOf<Long, MutatedChunk>()
 
     private fun updateBlock(b: Block, type: Material = Material.AIR) {
         if (b.world != world) return
-        mutatedChunks.getOrPut(b.chunk.chunkKey, { MutatedChunk() }).addBlock(b, type)
+        mutatedChunks.getOrPut(b.chunk.chunkKey) { MutatedChunk() }.addBlock(b, type)
     }
 
     @EventHandler
@@ -74,8 +81,14 @@ class WorldProtector(val world: World) : Listener {
             world.loadChunk(chunk)
             println("Restoring chunk x=${chunk.x} z=${chunk.z} (${data.blocks.size} actions)")
 
-            data.blocks.reversed().forEach { (material, chunkPos) ->
-                chunk.blockFromChunkPos(chunkPos).type = material
+            data.blocks.reversed().forEach { (material, chunkPos, data) ->
+                chunk.blockFromChunkPos(chunkPos).apply {
+                    type = material
+                    if (data != null) {
+                        println("Restored direction for block ${this.location}")
+                        blockData = data
+                    }
+                }
             }
         }
         mutatedChunks.clear()
