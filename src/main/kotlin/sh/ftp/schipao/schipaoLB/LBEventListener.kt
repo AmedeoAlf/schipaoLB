@@ -50,6 +50,7 @@ class LBEventListener(val block: Material, val outcomes: Collection<LBOutcome>) 
     fun onBlockBreak(event: BlockBreakEvent) {
         if (event.block.type == block) {
             event.isDropItems = false
+
             event.block.world.playSound(
                 event.block.location, Sound.BLOCK_STONE_BREAK, 1f, 1f
             )

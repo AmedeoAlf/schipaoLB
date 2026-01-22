@@ -221,6 +221,18 @@
   {
     "type": "mob",
     "entities": [
+      "ENDERMAN"
+    ]
+  },
+  {
+    "type": "mob",
+    "entities": [
+      "ELDER_GUARDIAN"
+    ]
+  },
+  {
+    "type": "mob",
+    "entities": [
       "PIG+PIG+PIG+PIG+PIG+PIG+PIG+PIG+PIG+PIG"
     ]
   },
@@ -251,10 +263,84 @@
     ]
   },
   {
+    "type": "multi",
+    "outcomes": [
+      {
+        "type": "effect",
+        "effect": "blindness",
+        "forTicks": 200,
+        "amplifier": 3,
+        "particles": true
+      },
+      {
+        "type": "itemdrop",
+        "items": [
+          "WOODEN_SWORD"
+        ]
+      },
+      {
+        "type": "mob",
+        "entities": [
+          "ZOMBIE/4",
+          "SKELETON/2",
+          "SPIDER/3",
+          "CREEPER"
+        ]
+      },
+      {
+        "type": "title",
+        "title": "§4SURVIVE",
+        "subtitle": "§7Fight till the end..."
+      }
+    ]
+  },
+  {
     "type": "effect",
     "effect": "slowness",
     "forTicks": 200,
     "amplifier": 2,
+    "particles": true
+  },
+  {
+    "type": "effect",
+    "effect": "levitation",
+    "forTicks": 100,
+    "amplifier": 2,
+    "particles": true
+  },
+  {
+    "type": "effect",
+    "effect": "strength",
+    "forTicks": 1200,
+    "amplifier": 1,
+    "particles": true
+  },
+  {
+    "type": "effect",
+    "effect": "haste",
+    "forTicks": 100,
+    "amplifier": 10,
+    "particles": true
+  },
+  {
+    "type": "effect",
+    "effect": "infested",
+    "forTicks": 300,
+    "amplifier": 2,
+    "particles": true
+  },
+  {
+    "type": "effect",
+    "effect": "nausea",
+    "forTicks": 200,
+    "amplifier": 3,
+    "particles": true
+  },
+  {
+    "type": "effect",
+    "effect": "invisibility",
+    "forTicks": 1000,
+    "amplifier": 1,
     "particles": true
   }
 ]
