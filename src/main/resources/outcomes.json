@@ -133,7 +133,7 @@
   {
     "type": "itemdrop",
     "items": [
-      "TRIDENT;VAI POSEIDONE"
+      "TRIDENT;VAI POSEIDONE;;minecraft:loyalty"
     ]
   },
   {
@@ -233,6 +233,12 @@
   {
     "type": "mob",
     "entities": [
+      "IRON_GOLEM"
+    ]
+  },
+  {
+    "type": "mob",
+    "entities": [
       "PIG+PIG+PIG+PIG+PIG+PIG+PIG+PIG+PIG+PIG"
     ]
   },
@@ -298,13 +304,6 @@
     "type": "effect",
     "effect": "slowness",
     "forTicks": 200,
-    "amplifier": 2,
-    "particles": true
-  },
-  {
-    "type": "effect",
-    "effect": "levitation",
-    "forTicks": 100,
     "amplifier": 2,
     "particles": true
   },
