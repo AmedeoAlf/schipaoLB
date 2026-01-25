@@ -6,6 +6,8 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import org.bukkit.Material
 import org.bukkit.plugin.java.JavaPlugin
+import sh.ftp.schipao.schipaoLB.outcomes.LBOutcome
+import sh.ftp.schipao.schipaoLB.outcomes.json
 import java.io.File
 
 
@@ -15,18 +17,20 @@ class SchipaoLB : JavaPlugin() {
     override fun onEnable() {
         protector = WorldProtector(server.respawnWorld)
         println("Initialized worldProtector")
-        GameManager.curr = GameManager(server.respawnWorld)
-        println("Initialized GameManager")
         loadConfig()
         println("Loaded config")
+        GameManager.curr = GameManager(server.respawnWorld)
+        println("Initialized GameManager")
+        println(Configuration.curr)
         server.pluginManager.registerEvents(LBEventListener(Material.DRIED_KELP_BLOCK, loadOutcomes()), this)
         server.pluginManager.registerEvents(protector, this)
         server.pluginManager.registerEvents(SpawnListener(), this)
         println("Registered events")
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) {
-            it.registrar().register(
-                worldProtectorCmd(protector)
-            )
+            it.registrar().let { r ->
+                r.register(worldProtectorCmd(protector))
+                r.register(GameManager.cmd())
+            }
         }
         println("Registered commands")
     }

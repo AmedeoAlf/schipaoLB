@@ -13,6 +13,7 @@ import org.bukkit.event.block.BlockBurnEvent
 import org.bukkit.event.block.BlockExplodeEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityExplodeEvent
+import sh.ftp.schipao.schipaoLB.outcomes.LBOutcome
 
 val Block.position: BlockPosition get() = Position.block(x, y, z)
 

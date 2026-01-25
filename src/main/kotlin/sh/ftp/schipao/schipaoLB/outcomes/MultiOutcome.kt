@@ -1,4 +1,4 @@
-package sh.ftp.schipao.schipaoLB
+package sh.ftp.schipao.schipaoLB.outcomes
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

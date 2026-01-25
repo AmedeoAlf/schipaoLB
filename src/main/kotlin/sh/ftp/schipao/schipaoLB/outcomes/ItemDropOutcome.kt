@@ -1,4 +1,4 @@
-package sh.ftp.schipao.schipaoLB
+package sh.ftp.schipao.schipaoLB.outcomes
 
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
@@ -18,6 +18,7 @@ import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
+import sh.ftp.schipao.schipaoLB.parseQuantity
 
 fun ItemStack.toSerializedString(): String = listOf(
     "${type.name}/${amount}",

@@ -1,4 +1,4 @@
-package sh.ftp.schipao.schipaoLB
+package sh.ftp.schipao.schipaoLB.outcomes
 
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey

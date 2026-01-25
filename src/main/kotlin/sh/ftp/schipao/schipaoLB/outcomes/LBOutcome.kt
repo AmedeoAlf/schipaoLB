@@ -1,4 +1,4 @@
-package sh.ftp.schipao.schipaoLB
+package sh.ftp.schipao.schipaoLB.outcomes
 
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
