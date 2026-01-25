@@ -15,6 +15,8 @@ class SchipaoLB : JavaPlugin() {
     override fun onEnable() {
         protector = WorldProtector(server.respawnWorld)
         println("Initialized worldProtector")
+        GameManager.curr = GameManager(server.respawnWorld)
+        println("Initialized GameManager")
         loadConfig()
         println("Loaded config")
         server.pluginManager.registerEvents(LBEventListener(Material.DRIED_KELP_BLOCK, loadOutcomes()), this)
@@ -57,7 +59,7 @@ class SchipaoLB : JavaPlugin() {
             file.writeText(Json.encodeToString(Configuration.DEFAULT))
         }
 
-        Configuration.current = Json.decodeFromStream(file.inputStream())
+        Configuration.curr = Json.decodeFromStream(file.inputStream())
     }
 
 }
