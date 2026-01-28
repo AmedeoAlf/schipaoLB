@@ -106,7 +106,7 @@
   {
     "type": "itemdrop",
     "items": [
-      "NETHERITE_AXE;Leggermente Gay"
+      "NETHERITE_AXE;Leggermente Dell'Altra Sponda"
     ]
   },
   {
@@ -120,6 +120,12 @@
     "type": "itemdrop",
     "items": [
       "WIND_CHARGE/12"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "ENDER_PEARL/5"
     ]
   },
   {
@@ -221,6 +227,25 @@
   {
     "type": "mob",
     "entities": [
+      "MAGMA_CUBE"
+    ]
+  },
+  {
+    "type": "mob",
+    "entities": [
+      "GIANT"
+    ]
+  },
+  {
+    "type": "mob",
+    "entities": [
+      "WITCH",
+      "BAT/30"
+    ]
+  },
+  {
+    "type": "mob",
+    "entities": [
       "ENDERMAN"
     ]
   },
@@ -246,6 +271,28 @@
     "type": "mob",
     "entities": [
       "GHAST+RAVAGER+COW+PIG+BLAZE+CREEPER+SKELETON+CHICKEN"
+    ]
+  },
+  {
+    "type": "multi",
+    "outcomes": [
+      {
+        "type": "itemdrop",
+        "items": [
+          "BONE/32"
+        ]
+      },
+      {
+        "type": "mob",
+        "entities": [
+          "WOLF/10"
+        ]
+      },
+      {
+        "type": "title",
+        "title": "§8Tame Them All",
+        "subtitle": "Non Maltrattarli"
+      }
     ]
   },
   {
@@ -290,7 +337,8 @@
           "ZOMBIE/4",
           "SKELETON/2",
           "SPIDER/3",
-          "CREEPER"
+          "CREEPER",
+          "SLIME/4"
         ]
       },
       {
