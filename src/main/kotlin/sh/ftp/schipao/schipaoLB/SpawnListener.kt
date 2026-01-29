@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
+import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
@@ -67,5 +68,10 @@ class SpawnListener : Listener {
         event.player.teleport(
             teamSpawn ?: Configuration.curr.spawnPos.toLocation(event.player.location.world)
         )
+    }
+
+    @EventHandler
+    fun onPlayerDeath(event: PlayerDeathEvent) {
+        GameManager.curr.playerDeath(event.player)
     }
 }
