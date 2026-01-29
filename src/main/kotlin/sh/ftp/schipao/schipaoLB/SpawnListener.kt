@@ -68,14 +68,4 @@ class SpawnListener : Listener {
             teamSpawn ?: Configuration.curr.spawnPos.toLocation(event.player.location.world)
         )
     }
-
-    @EventHandler
-    fun onEntityInteract(event: PlayerInteractEvent) {
-        if (event.action != Action.RIGHT_CLICK_BLOCK) return
-        val block = event.clickedBlock ?: return
-        if (Configuration.curr.joinSign == block.position) {
-            event.isCancelled = true
-            GameManager.curr.playerJoin(event.player)
-        }
-    }
 }
