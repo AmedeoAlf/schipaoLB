@@ -34,5 +34,5 @@ fun Material.woolDyeColor() = when (this) {
     Material.GREEN_WOOL-> DyeColor.GREEN
     Material.RED_WOOL-> DyeColor.RED
     Material.BLACK_WOOL-> DyeColor.BLACK
-    else -> DyeColor.BLACK
+    else -> null
 }
