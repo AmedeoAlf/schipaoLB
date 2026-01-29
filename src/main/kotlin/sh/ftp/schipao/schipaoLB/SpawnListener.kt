@@ -2,7 +2,6 @@ package sh.ftp.schipao.schipaoLB
 
 import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent
 import org.bukkit.Bukkit
-import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
@@ -25,17 +24,18 @@ class SpawnListener : Listener {
             Bukkit.getConsoleSender(),
             "scoreboard players reset ${event.player.name} Deaths"
         )
+        GameManager.curr.playerLeave(event.player)
     }
 
     @EventHandler
     fun onPlayerInteract(event: PlayerInteractEvent) {
-        if (event.item != null && (event.action == Action.RIGHT_CLICK_AIR || event.action == Action.RIGHT_CLICK_BLOCK)) {
-            if (event.item!!.type == Material.COMPASS) {
-                for ((i, team) in GameManager.curr.teams.withIndex()) {
-                    GameManager.curr.teams.indexOfFirst { it.dyeColor == ilColoreDelBloccoInMano }
-                }
-            }
-        }
+        if (GameManager.curr.state != GameManager.GameState.LOBBY
+            || event.item == null
+            || !(event.action == Action.RIGHT_CLICK_AIR || event.action == Action.RIGHT_CLICK_BLOCK)
+        ) return
+        val color = event.item!!.type.woolDyeColor() ?: return
+        GameManager.curr.teams.indexOfFirst { it.dyeColor == color }
+        event.isCancelled = true
     }
 
     @EventHandler
@@ -43,7 +43,7 @@ class SpawnListener : Listener {
         val teamSpawn = GameManager.curr
             .takeIf { it.state == GameManager.GameState.PLAYING }
             ?.teams
-            ?.find {  it.players.contains(event.player)  }
+            ?.find { it.players.contains(event.player) }
             ?.spawnPoint
         event.player.teleport(
             teamSpawn ?: Configuration.curr.spawnPos.toLocation(event.player.location.world)

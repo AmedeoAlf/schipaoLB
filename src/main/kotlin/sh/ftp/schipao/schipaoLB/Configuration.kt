@@ -57,6 +57,7 @@ object SLSerializer : KSerializer<SimpleLocation> {
 
 @Serializable
 data class Configuration(
+    val maxDeaths: Int,
     val spawnPos: SimpleLocation,
     val joinSign: SimpleLocation,
     val luckyBlockSpawns: List<SimpleLocation>,
@@ -64,6 +65,7 @@ data class Configuration(
 ) {
     companion object {
         val DEFAULT = Configuration(
+            maxDeaths = 20,
             spawnPos = SimpleLocation.ZERO,
             joinSign = SimpleLocation.ZERO,
             luckyBlockSpawns = listOf(SimpleLocation.ZERO),

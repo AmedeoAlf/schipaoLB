@@ -5,22 +5,17 @@ import com.mojang.brigadier.arguments.StringArgumentType
 import io.papermc.paper.command.brigadier.Commands
 import net.kyori.adventure.text.Component.text
 import net.kyori.adventure.text.format.TextColor.color
+import net.kyori.adventure.title.Title
 import org.bukkit.DyeColor
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.entity.Player
 
-class GameManager(world: World) {
+class GameManager(val world: World) {
 
     companion object {
         lateinit var curr: GameManager
 
-        /*.executes {
-                val player = it.source.executor as? Player ?: return@executes Command.SINGLE_SUCCESS
-                GameManager.curr.playerJoin(player)
-                Command.SINGLE_SUCCESS
-            }
-         */
         fun cmd(name: String = "lb") = Commands.literal(name)
             .then(
                 Commands.literal("team")
@@ -62,7 +57,12 @@ class GameManager(world: World) {
         PLAYING, LOBBY
     }
 
-    data class Team(var players: MutableSet<Player>, val idx: Int, val spawnPoint: Location, val dyeColor: DyeColor) {}
+    data class Team(
+        var players: MutableSet<Player>,
+        val idx: Int,
+        val spawnPoint: Location,
+        val dyeColor: DyeColor,
+    ) {}
 
     val teams = Configuration.curr
         .luckyBlockSpawns
@@ -83,6 +83,31 @@ class GameManager(world: World) {
             text("Use ")
                 .append(text("/lb team <color>", color(0xffee10)))
                 .append(text(" to change team"))
+        }
+    }
+
+    fun leaveTeam(player: Player): Team? {
+        val removedFrom = teams.find { it.players.remove(player) }
+        if (removedFrom != null && state == GameState.PLAYING && removedFrom.players.isEmpty()) {
+            world.sendMessage { text("Team ${removedFrom.dyeColor.name} has been destroyed") }
+        }
+        return removedFrom
+    }
+
+    fun playerLeave(player: Player) {
+        val found = leaveTeam(player)
+        if (found != null && state == GameState.PLAYING)
+            player.world.sendMessage { text("${player.name} left the match") }
+    }
+
+    fun playerDeath(player: Player) {
+        val deaths = player.scoreboard.getObjective("Deaths")!!.getScore(player).score
+        if (deaths >= Configuration.curr.maxDeaths) {
+            player.showTitle(Title.title(
+                text("GAME OVER"),
+                text("You have died $deaths times"),
+            ))
+            leaveTeam(player)
         }
     }
 }
