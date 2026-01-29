@@ -1,6 +1,8 @@
 package sh.ftp.schipao.schipaoLB
 
 import io.papermc.paper.math.BlockPosition
+import org.bukkit.DyeColor
+import org.bukkit.Material
 
 fun parseQuantity(str: String, sep: String = "/"): Pair<String, Int> {
     try {
@@ -14,3 +16,23 @@ fun parseQuantity(str: String, sep: String = "/"): Pair<String, Int> {
 operator fun BlockPosition.component1() = blockX()
 operator fun BlockPosition.component2() = blockY()
 operator fun BlockPosition.component3() = blockZ()
+
+fun Material.woolDyeColor() = when (this) {
+    Material.WHITE_WOOL-> DyeColor.WHITE
+    Material.ORANGE_WOOL-> DyeColor.ORANGE
+    Material.MAGENTA_WOOL-> DyeColor.MAGENTA
+    Material.LIGHT_BLUE_WOOL-> DyeColor.LIGHT_BLUE
+    Material.YELLOW_WOOL-> DyeColor.YELLOW
+    Material.LIME_WOOL-> DyeColor.LIME
+    Material.PINK_WOOL-> DyeColor.PINK
+    Material.GRAY_WOOL-> DyeColor.GRAY
+    Material.LIGHT_GRAY_WOOL-> DyeColor.LIGHT_GRAY
+    Material.CYAN_WOOL-> DyeColor.CYAN
+    Material.PURPLE_WOOL-> DyeColor.PURPLE
+    Material.BLUE_WOOL-> DyeColor.BLUE
+    Material.BROWN_WOOL-> DyeColor.BROWN
+    Material.GREEN_WOOL-> DyeColor.GREEN
+    Material.RED_WOOL-> DyeColor.RED
+    Material.BLACK_WOOL-> DyeColor.BLACK
+    else -> DyeColor.BLACK
+}
