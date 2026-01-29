@@ -36,20 +36,25 @@ class SpawnListener : Listener {
             else -> return
         }
 
+        val teamFromWoolBlock = event.item
+            ?.type
+            ?.woolDyeColor()
+            ?.let { col ->
+                GameManager.curr.teams.find { it.dyeColor == col }
+            }
+
         if (event.clickedBlock != null
             && Configuration.curr.joinSign == event.clickedBlock!!.position
         ) {
             GameManager.curr.playerJoin(event.player)
             event.isCancelled = true
-        } else if (event.item?.type?.woolDyeColor() != null) {
-            val color = event.item!!.type.woolDyeColor()!!
+        } else if (teamFromWoolBlock != null) {
             GameManager.curr.playerJoin(
                 event.player,
-                GameManager.curr.teams.indexOfFirst { it.dyeColor == color }
+                teamFromWoolBlock.idx
             )
             event.isCancelled = true
         }
-
     }
 
     @EventHandler
