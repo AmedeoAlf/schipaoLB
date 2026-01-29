@@ -51,7 +51,7 @@ class SpawnListener : Listener {
         } else if (teamFromWoolBlock != null) {
             GameManager.curr.playerJoin(
                 event.player,
-                teamFromWoolBlock.idx
+                teamFromWoolBlock
             )
             event.isCancelled = true
         }

@@ -33,7 +33,7 @@ class GameManager(val world: World) {
                                         runCatching { DyeColor.valueOf(colorStr) }.getOrElse { return@run "\"$colorStr\" is not a valid team" }
                                     val team = curr.teams.find { it.dyeColor.ordinal == dyeColor.ordinal }
                                         ?: return@run "${dyeColor.name} is not configured"
-                                    GameManager.curr.playerJoin(player, team.idx)
+                                    GameManager.curr.playerJoin(player, team)
                                     "Player ${player.name} moved to team ${team.dyeColor.name}"
                                 })
                                 Command.SINGLE_SUCCESS
@@ -62,7 +62,10 @@ class GameManager(val world: World) {
         val idx: Int,
         val spawnPoint: Location,
         val dyeColor: DyeColor,
-    ) {}
+    ) {
+        fun component() = text(dyeColor.name)
+            .color(color(dyeColor.color.asRGB()))
+    }
 
     val teams = Configuration.curr
         .luckyBlockSpawns
@@ -73,13 +76,15 @@ class GameManager(val world: World) {
 
     var state = GameState.LOBBY
 
-    fun playerJoin(player: Player, teamIdx: Int = -1) {
+    fun playerJoin(player: Player, team: Team? = null) {
         teams.forEach { it.players.remove(player) }
-        val toTeam = if (teamIdx != -1) teams[teamIdx]
-        else teams.reduce { acc, team -> if (acc.players.size <= team.players.size) acc else team }
+        val toTeam = team ?: teams.reduce { acc, team -> if (acc.players.size <= team.players.size) acc else team }
         toTeam.players.add(player)
-        player.world.sendMessage { text("${player.name} joined the game in team ${toTeam.dyeColor.name}") }
-        if (teamIdx == -1) player.sendMessage {
+        player.world.sendMessage {
+            text("${player.name} joined the game in team")
+                .append { toTeam.component() }
+        }
+        if (team == null) player.sendMessage {
             text("Use ")
                 .append(text("/lb team <color>", color(0xffee10)))
                 .append(text(" to change team"))
@@ -89,7 +94,11 @@ class GameManager(val world: World) {
     fun leaveTeam(player: Player): Team? {
         val removedFrom = teams.find { it.players.remove(player) }
         if (removedFrom != null && state == GameState.PLAYING && removedFrom.players.isEmpty()) {
-            world.sendMessage { text("Team ${removedFrom.dyeColor.name} has been destroyed") }
+            world.sendMessage {
+                text("Team ")
+                    .append(removedFrom.component())
+                    .append(text(" has been destroyed"))
+            }
         }
         return removedFrom
     }
@@ -103,10 +112,12 @@ class GameManager(val world: World) {
     fun playerDeath(player: Player) {
         val deaths = player.scoreboard.getObjective("Deaths")!!.getScore(player).score
         if (deaths >= Configuration.curr.maxDeaths) {
-            player.showTitle(Title.title(
-                text("GAME OVER"),
-                text("You have died $deaths times"),
-            ))
+            player.showTitle(
+                Title.title(
+                    text("GAME OVER"),
+                    text("You have died $deaths times"),
+                )
+            )
             leaveTeam(player)
         }
     }
