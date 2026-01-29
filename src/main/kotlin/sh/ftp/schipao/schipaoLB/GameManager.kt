@@ -42,8 +42,7 @@ class GameManager(val world: World) {
             ).then(
                 Commands.literal("list").executes { ctx ->
                     curr.teams.map { t ->
-                        text(t.dyeColor.name, color(t.dyeColor.color.asRGB()))
-                            .append(text(": " + t.players.joinToString { it.name }))
+                        t.component().append(text(": " + t.players.joinToString { it.name }))
                     }.forEach {
                         ctx.source.sender.sendMessage(it)
                     }
@@ -77,6 +76,10 @@ class GameManager(val world: World) {
     var state = GameState.LOBBY
 
     fun playerJoin(player: Player, team: Team? = null) {
+        if (state != GameState.LOBBY) {
+            player.sendMessage { text("Wait for the current game to stop" ) }
+            return
+        }
         teams.forEach { it.players.remove(player) }
         val toTeam = team ?: teams.reduce { acc, team -> if (acc.players.size <= team.players.size) acc else team }
         toTeam.players.add(player)
@@ -110,6 +113,7 @@ class GameManager(val world: World) {
     }
 
     fun playerDeath(player: Player) {
+        if (state != GameState.PLAYING) return
         val deaths = player.scoreboard.getObjective("Deaths")!!.getScore(player).score
         if (deaths >= Configuration.curr.maxDeaths) {
             player.showTitle(
