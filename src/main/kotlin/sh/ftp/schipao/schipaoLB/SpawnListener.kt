@@ -29,13 +29,27 @@ class SpawnListener : Listener {
 
     @EventHandler
     fun onPlayerInteract(event: PlayerInteractEvent) {
-        if (GameManager.curr.state != GameManager.GameState.LOBBY
-            || event.item == null
-            || !(event.action == Action.RIGHT_CLICK_AIR || event.action == Action.RIGHT_CLICK_BLOCK)
-        ) return
-        val color = event.item!!.type.woolDyeColor() ?: return
-        GameManager.curr.teams.indexOfFirst { it.dyeColor == color }
-        event.isCancelled = true
+        if (GameManager.curr.state != GameManager.GameState.LOBBY) return
+
+        when (event.action) {
+            Action.RIGHT_CLICK_AIR, Action.RIGHT_CLICK_BLOCK -> {}
+            else -> return
+        }
+
+        if (event.clickedBlock != null
+            && Configuration.curr.joinSign == event.clickedBlock!!.position
+        ) {
+            GameManager.curr.playerJoin(event.player)
+            event.isCancelled = true
+        } else if (event.item?.type?.woolDyeColor() != null) {
+            val color = event.item!!.type.woolDyeColor()!!
+            GameManager.curr.playerJoin(
+                event.player,
+                GameManager.curr.teams.indexOfFirst { it.dyeColor == color }
+            )
+            event.isCancelled = true
+        }
+
     }
 
     @EventHandler
