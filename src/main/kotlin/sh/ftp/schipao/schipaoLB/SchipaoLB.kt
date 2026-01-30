@@ -12,9 +12,15 @@ import java.io.File
 
 
 class SchipaoLB : JavaPlugin() {
+
+    companion object {
+        lateinit var dataFolder: File
+    }
+
     lateinit var protector: WorldProtector
 
     override fun onEnable() {
+        Companion.dataFolder = this@SchipaoLB.dataFolder
         protector = WorldProtector(server.respawnWorld)
         println("Initialized worldProtector")
         loadConfig()
@@ -41,7 +47,7 @@ class SchipaoLB : JavaPlugin() {
 
     @OptIn(ExperimentalSerializationApi::class)
     fun loadOutcomes(): List<LBOutcome> {
-        val file = File(dataFolder, "outcomes.json")
+        val file = File(this@SchipaoLB.dataFolder, "outcomes.json")
 
         if (!file.exists()) {
             file.parentFile.mkdirs()
@@ -56,7 +62,7 @@ class SchipaoLB : JavaPlugin() {
 
     @OptIn(ExperimentalSerializationApi::class)
     fun loadConfig() {
-        val file = File(dataFolder, "config.json")
+        val file = File(this@SchipaoLB.dataFolder, "config.json")
 
         if (!file.exists()) {
             file.parentFile.mkdirs()

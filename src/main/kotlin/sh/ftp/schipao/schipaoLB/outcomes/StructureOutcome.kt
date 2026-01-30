@@ -7,6 +7,7 @@ import org.bukkit.block.Block
 import org.bukkit.block.structure.Mirror
 import org.bukkit.block.structure.StructureRotation
 import org.bukkit.entity.Player
+import sh.ftp.schipao.schipaoLB.SchipaoLB
 import java.io.File
 import java.util.Random
 
@@ -28,8 +29,8 @@ class StructureOutcome(
         )
 
         val structureFile = File(
-            Bukkit.getPluginsFolder(),
-            "SchipaoLB/structures/$structure.nbt"
+            SchipaoLB.dataFolder,
+            "structures/$structure.nbt"
         )
 
         if (!structureFile.exists()) {
