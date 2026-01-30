@@ -18,7 +18,8 @@ class StructureOutcome(
     val offsetX: Int = 0,
     val offsetY: Int = 0,
     val offsetZ: Int = 0,
-    val rotation: Boolean = true
+    val rotation: Boolean = true,
+    val entities: Boolean = false
 ) : LBOutcome {
 
     override fun run(player: Player, block: Block) {
@@ -48,7 +49,7 @@ class StructureOutcome(
 
         loadedStructure.place(
             baseLocation,
-            false,
+            entities,
             rotationValue,
             Mirror.NONE,
             0,
