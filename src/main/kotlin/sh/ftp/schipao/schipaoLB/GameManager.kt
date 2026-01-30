@@ -84,7 +84,7 @@ class GameManager(val world: World) {
         val toTeam = team ?: teams.reduce { acc, team -> if (acc.players.size <= team.players.size) acc else team }
         toTeam.players.add(player)
         player.world.sendMessage {
-            text("${player.name} joined the game in team")
+            text("${player.name} joined the game in team ")
                 .append { toTeam.component() }
         }
         if (team == null) player.sendMessage {
