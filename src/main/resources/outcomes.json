@@ -389,5 +389,9 @@
     "forTicks": 1000,
     "amplifier": 1,
     "particles": true
+  },
+  {
+    "type": "structure",
+    "structure": "penis"
   }
 ]
