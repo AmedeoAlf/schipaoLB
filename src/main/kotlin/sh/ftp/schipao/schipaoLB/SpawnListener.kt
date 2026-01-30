@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
+import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
@@ -70,12 +71,7 @@ class SpawnListener : Listener {
     }
 
     @EventHandler
-    fun onEntityInteract(event: PlayerInteractEvent) {
-        if (event.action != Action.RIGHT_CLICK_BLOCK) return
-        val block = event.clickedBlock ?: return
-        if (Configuration.curr.joinSign == block.position) {
-            event.isCancelled = true
-            GameManager.curr.playerJoin(event.player)
-        }
+    fun onPlayerDeath(event: PlayerDeathEvent) {
+        GameManager.curr.playerDeath(event.player)
     }
 }
