@@ -392,6 +392,19 @@
   },
   {
     "type": "structure",
-    "structure": "penis"
+    "structure": "anvile_cage"
+  },
+  {
+    "type": "structure",
+    "structure": "tnt_pillar",
+    "entities": "true"
+  },
+  {
+    "type": "structure",
+    "structure": "lava_cage"
+  },
+  {
+    "type": "structure",
+    "structure": "temple"
   }
 ]
