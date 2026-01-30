@@ -17,9 +17,10 @@ class StructureOutcome(
     val offsetX: Int = 0,
     val offsetY: Int = 0,
     val offsetZ: Int = 0,
-    val rotation: Boolean = true ) : LBOutcome {
+    val rotation: Boolean = true
+) : LBOutcome {
 
-    fun run(block: Block, player: Player) {
+    override fun run(player: Player, block: Block) {
         val baseLocation = block.location.clone().add(
             offsetX.toDouble(),
             offsetY.toDouble(),
@@ -53,9 +54,5 @@ class StructureOutcome(
             1.0f,
             Random()
         )
-    }
-
-    override fun run(player: Player, block: Block) {
-        TODO("Not yet implemented")
     }
 }
