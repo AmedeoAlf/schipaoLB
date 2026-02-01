@@ -5,6 +5,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import org.bukkit.Material
+import org.bukkit.World
 import org.bukkit.plugin.java.JavaPlugin
 import sh.ftp.schipao.schipaoLB.outcomes.LBOutcome
 import sh.ftp.schipao.schipaoLB.outcomes.json
@@ -15,6 +16,7 @@ class SchipaoLB : JavaPlugin() {
 
     companion object {
         lateinit var dataFolder: File
+        lateinit var world: World
     }
 
     lateinit var protector: WorldProtector
