@@ -406,5 +406,13 @@
   {
     "type": "structure",
     "structure": "temple"
+  },
+  {
+    "type": "structure",
+    "structure": "loot_crate"
+  },
+  {
+    "type": "structure",
+    "structure": "spawner"
   }
 ]
