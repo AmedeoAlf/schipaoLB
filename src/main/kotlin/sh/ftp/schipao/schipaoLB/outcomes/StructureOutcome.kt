@@ -1,5 +1,6 @@
 package sh.ftp.schipao.schipaoLB.outcomes
 
+import io.papermc.paper.math.Position
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.Bukkit
@@ -64,9 +65,11 @@ class StructureOutcome(
                         current: BlockState,
                         state: BlockTransformer.TransformationState
                     ): BlockState {
-                        SchipaoLB.worldProtector.addBlock(current.block)
-                        state.world.block
-                        state.original.block
+                        if (current.isPlaced) {
+                            SchipaoLB.worldProtector.logRemoval(current.block)
+                        } else {
+                            SchipaoLB.worldProtector.logCreation(Position.block(x, y, z), region.world)
+                        }
                         return current
                     }
                 }

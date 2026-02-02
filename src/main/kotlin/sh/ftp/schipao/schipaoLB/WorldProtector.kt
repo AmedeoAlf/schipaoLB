@@ -48,17 +48,17 @@ class WorldProtector : Listener {
 
     private val mutatedChunks = mutableMapOf<Long, MutatedChunk>()
 
-    fun addBlock(block: Block) {
+    fun logRemoval(block: Block) {
         if (block.world != SchipaoLB.world) return
         mutatedChunks.getOrPut(block.chunk.chunkKey) { MutatedChunk() }.addBlock(block)
     }
 
-    fun addBlock(block: Block, blockData: BlockData) {
+    fun logRemoval(block: Block, blockData: BlockData) {
         if (block.world != SchipaoLB.world) return
         mutatedChunks.getOrPut(block.chunk.chunkKey) { MutatedChunk() }.addBlockData(block.position, blockData)
     }
 
-    fun removeBlock(blockPosition: BlockPosition, world: World) {
+    fun logCreation(blockPosition: BlockPosition, world: World) {
         if (world != SchipaoLB.world) return
         mutatedChunks.getOrPut(
             blockPosition.toLocation(world).chunk.chunkKey
@@ -68,34 +68,34 @@ class WorldProtector : Listener {
 
     @EventHandler
     fun onBlockPlace(event: BlockPlaceEvent) {
-        removeBlock(event.block.position, event.block.world)
+        logCreation(event.block.position, event.block.world)
     }
 
     @EventHandler
     fun onBlockBreak(event: BlockBreakEvent) {
-        addBlock(event.block)
+        logRemoval(event.block)
     }
 
     @EventHandler
     fun onBlockExplode(event: BlockExplodeEvent) {
-        addBlock(event.block, event.explodedBlockState.blockData)
+        logRemoval(event.block, event.explodedBlockState.blockData)
     }
 
     @EventHandler
     fun onBlockBurn(event: BlockBurnEvent) {
-        addBlock(event.block)
+        logRemoval(event.block)
     }
 
     @EventHandler
     fun onEntityExplode(event: EntityExplodeEvent) {
         event.blockList().forEach {
-            addBlock(it)
+            logRemoval(it)
         }
     }
 
     @EventHandler
     fun onBlockDestroy(event: BlockDestroyEvent) {
-        addBlock(event.block)
+        logRemoval(event.block)
     }
 
     fun restore() {
