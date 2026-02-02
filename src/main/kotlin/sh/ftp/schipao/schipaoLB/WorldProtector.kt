@@ -1,6 +1,9 @@
+@file:Suppress("UnstableApiUsage")
+
 package sh.ftp.schipao.schipaoLB
 
 import com.destroystokyo.paper.event.block.BlockDestroyEvent
+import io.papermc.paper.math.BlockPosition
 import org.bukkit.Chunk
 import org.bukkit.Material
 import org.bukkit.World
@@ -14,7 +17,7 @@ import org.bukkit.event.block.BlockExplodeEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityExplodeEvent
 
-fun Block.chunkPosition() = (y + 64) shl 4 or (x and 0xf) shl 4 or (z and 0xf)
+fun BlockPosition.chunkPosition() = (blockY() + 64) shl 4 or (blockX() and 0xf) shl 4 or (blockZ() and 0xf)
 
 fun Chunk.blockFromChunkPos(pos: Int) = getBlock(
     (pos shr 4 and 0xf),
@@ -22,68 +25,94 @@ fun Chunk.blockFromChunkPos(pos: Int) = getBlock(
     (pos and 0xf),
 )
 
-class WorldProtector(val world: World) : Listener {
-    data class OverriddenBlock(val material: Material, val chunkPos: Int, val data: BlockData)
+class WorldProtector : Listener {
+    data class OverriddenBlock(val chunkPos: Int, val data: BlockData?)
     class MutatedChunk {
         val blocks = mutableListOf<OverriddenBlock>()
-        fun addBlock(b: Block, type: Material) = blocks.add(
+        fun addBlock(b: Block) = blocks.add(
             OverriddenBlock(
-                type, b.chunkPosition(),
-                b.blockData
+                b.position.chunkPosition(), b.blockData
             )
+        )
+
+        fun addBlockData(blockPosition: BlockPosition, data: BlockData) = blocks.add(
+            OverriddenBlock(
+                blockPosition.chunkPosition(), data
+            )
+        )
+
+        fun addEmpty(blockPosition: BlockPosition) = blocks.add(
+            OverriddenBlock(blockPosition.chunkPosition(), null)
         )
     }
 
-    val mutatedChunks = mutableMapOf<Long, MutatedChunk>()
+    private val mutatedChunks = mutableMapOf<Long, MutatedChunk>()
 
-    private fun updateBlock(b: Block, type: Material = Material.AIR) {
-        if (b.world != world) return
-        mutatedChunks.getOrPut(b.chunk.chunkKey) { MutatedChunk() }.addBlock(b, type)
+    fun addBlock(block: Block) {
+        if (block.world != SchipaoLB.world) return
+        mutatedChunks.getOrPut(block.chunk.chunkKey) { MutatedChunk() }.addBlock(block)
     }
+
+    fun addBlock(block: Block, blockData: BlockData) {
+        if (block.world != SchipaoLB.world) return
+        mutatedChunks.getOrPut(block.chunk.chunkKey) { MutatedChunk() }.addBlockData(block.position, blockData)
+    }
+
+    fun removeBlock(blockPosition: BlockPosition, world: World) {
+        if (world != SchipaoLB.world) return
+        mutatedChunks.getOrPut(
+            blockPosition.toLocation(world).chunk.chunkKey
+        ) { MutatedChunk() }.addEmpty(blockPosition)
+    }
+
 
     @EventHandler
     fun onBlockPlace(event: BlockPlaceEvent) {
-        updateBlock(event.block)
+        removeBlock(event.block.position, event.block.world)
     }
 
     @EventHandler
     fun onBlockBreak(event: BlockBreakEvent) {
-        updateBlock(event.block, event.block.type)
+        addBlock(event.block)
     }
 
     @EventHandler
     fun onBlockExplode(event: BlockExplodeEvent) {
-        updateBlock(event.block, event.explodedBlockState.type)
+        addBlock(event.block, event.explodedBlockState.blockData)
     }
 
     @EventHandler
     fun onBlockBurn(event: BlockBurnEvent) {
-        updateBlock(event.block, event.block.type)
+        addBlock(event.block)
     }
 
     @EventHandler
     fun onEntityExplode(event: EntityExplodeEvent) {
         event.blockList().forEach {
-            updateBlock(it, it.type)
+            addBlock(it)
         }
     }
 
     @EventHandler
     fun onBlockDestroy(event: BlockDestroyEvent) {
-        updateBlock(event.block, event.block.type)
+        addBlock(event.block)
     }
 
     fun restore() {
-        println("Restoring ${world.name}, with ${mutatedChunks.size} chunks")
+        println("Restoring ${SchipaoLB.world.name}, with ${mutatedChunks.size} chunks")
         mutatedChunks.forEach { (key, data) ->
-            val chunk = world.getChunkAt(key)
-            world.loadChunk(chunk)
+            val chunk = SchipaoLB.world.getChunkAt(key)
+            SchipaoLB.world.loadChunk(chunk)
             println("Restoring chunk x=${chunk.x} z=${chunk.z} (${data.blocks.size} actions)")
 
-            data.blocks.reversed().forEach { (material, chunkPos, data) ->
-                chunk.blockFromChunkPos(chunkPos).apply {
-                    type = material
-                    blockData = data
+            data.blocks.reversed().forEach { (chunkPos, data) ->
+                if (data == null) {
+                    chunk.blockFromChunkPos(chunkPos).type = Material.AIR
+                } else {
+                    chunk.blockFromChunkPos(chunkPos).apply {
+                        type = data.material
+                        blockData = data
+                    }
                 }
             }
         }
