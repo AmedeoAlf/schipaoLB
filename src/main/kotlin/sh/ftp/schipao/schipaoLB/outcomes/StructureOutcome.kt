@@ -3,7 +3,6 @@ package sh.ftp.schipao.schipaoLB.outcomes
 import io.papermc.paper.math.Position
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.bukkit.Bukkit
 import org.bukkit.block.Block
 import org.bukkit.block.BlockState
 import org.bukkit.block.structure.Mirror
@@ -11,8 +10,9 @@ import org.bukkit.block.structure.StructureRotation
 import org.bukkit.entity.Player
 import org.bukkit.generator.LimitedRegion
 import org.bukkit.util.BlockTransformer
+import sh.ftp.schipao.schipaoLB.LBStructureManager
 import sh.ftp.schipao.schipaoLB.SchipaoLB
-import java.io.File
+import sh.ftp.schipao.schipaoLB.position
 import java.util.*
 
 @SerialName("structure")
@@ -27,21 +27,16 @@ class StructureOutcome(
 ) : LBOutcome {
 
     override fun run(player: Player, block: Block) {
-        val baseLocation = block.location.clone().add(
-            offsetX.toDouble(), offsetY.toDouble(), offsetZ.toDouble()
-        )
-
-        val structureFile = File(
-            SchipaoLB.dataFolder, "structures/$structure.nbt"
-        )
-
-        if (!structureFile.exists()) {
-            player.sendMessage("§cStructure '$structure' not found!")
+        val loadedStructure = LBStructureManager.getStructure(structure)
+        if (loadedStructure == null) {
+            println("Structure '$structure' not found")
             return
         }
 
-        val structureManager = Bukkit.getStructureManager()
-        val loadedStructure = structureManager.loadStructure(structureFile)
+        @Suppress("UnstableApiUsage")
+        val baseLocation = block.position
+            .offset(offsetX, offsetY, offsetZ)
+            .toLocation(block.world)
 
         val rotationValue = if (rotation) StructureRotation.entries.toTypedArray().random()
         else StructureRotation.NONE
