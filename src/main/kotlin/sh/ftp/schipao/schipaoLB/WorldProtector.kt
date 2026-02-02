@@ -14,6 +14,8 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockBurnEvent
 import org.bukkit.event.block.BlockExplodeEvent
+import org.bukkit.event.block.BlockFormEvent
+import org.bukkit.event.block.BlockMultiPlaceEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityExplodeEvent
 
@@ -29,13 +31,8 @@ class WorldProtector : Listener {
     data class OverriddenBlock(val chunkPos: Int, val data: BlockData?)
     class MutatedChunk {
         val blocks = mutableListOf<OverriddenBlock>()
-        fun addBlock(b: Block) = blocks.add(
-            OverriddenBlock(
-                b.position.chunkPosition(), b.blockData
-            )
-        )
 
-        fun addBlockData(blockPosition: BlockPosition, data: BlockData) = blocks.add(
+        fun addBlock(blockPosition: BlockPosition, data: BlockData) = blocks.add(
             OverriddenBlock(
                 blockPosition.chunkPosition(), data
             )
@@ -48,14 +45,11 @@ class WorldProtector : Listener {
 
     private val mutatedChunks = mutableMapOf<Long, MutatedChunk>()
 
-    fun logRemoval(block: Block) {
-        if (block.world != SchipaoLB.world) return
-        mutatedChunks.getOrPut(block.chunk.chunkKey) { MutatedChunk() }.addBlock(block)
-    }
+    fun logRemoval(block: Block) = logRemoval(block, block.blockData)
 
     fun logRemoval(block: Block, blockData: BlockData) {
         if (block.world != SchipaoLB.world) return
-        mutatedChunks.getOrPut(block.chunk.chunkKey) { MutatedChunk() }.addBlockData(block.position, blockData)
+        mutatedChunks.getOrPut(block.chunk.chunkKey) { MutatedChunk() }.addBlock(block.position, blockData)
     }
 
     fun logCreation(blockPosition: BlockPosition, world: World) {
@@ -65,38 +59,36 @@ class WorldProtector : Listener {
         ) { MutatedChunk() }.addEmpty(blockPosition)
     }
 
+    fun logCreation(block: Block) = logCreation(block.position, block.world)
 
     @EventHandler
-    fun onBlockPlace(event: BlockPlaceEvent) {
-        logCreation(event.block.position, event.block.world)
+    fun onBlockPlace(event: BlockPlaceEvent) = logCreation(event.block.position, event.block.world)
+
+    @EventHandler
+    fun onBlockBreak(event: BlockBreakEvent) = logRemoval(event.block)
+
+    @EventHandler
+    fun onBlockExplode(event: BlockExplodeEvent) = logRemoval(event.block, event.explodedBlockState.blockData)
+
+    @EventHandler
+    fun onBlockBurn(event: BlockBurnEvent) = logRemoval(event.block)
+
+    @EventHandler
+    fun onEntityExplode(event: EntityExplodeEvent) = event.blockList().forEach {
+        logRemoval(it)
     }
 
     @EventHandler
-    fun onBlockBreak(event: BlockBreakEvent) {
-        logRemoval(event.block)
-    }
+    fun onBlockDestroy(event: BlockDestroyEvent) = logRemoval(event.block)
 
     @EventHandler
-    fun onBlockExplode(event: BlockExplodeEvent) {
-        logRemoval(event.block, event.explodedBlockState.blockData)
-    }
+    fun onBlockForm(event: BlockFormEvent) = logCreation(event.block)
 
     @EventHandler
-    fun onBlockBurn(event: BlockBurnEvent) {
-        logRemoval(event.block)
-    }
-
-    @EventHandler
-    fun onEntityExplode(event: EntityExplodeEvent) {
-        event.blockList().forEach {
-            logRemoval(it)
+    fun onBlockMultiPlace(event: BlockMultiPlaceEvent) =
+        event.replacedBlockStates.forEach {
+            logCreation(it.block)
         }
-    }
-
-    @EventHandler
-    fun onBlockDestroy(event: BlockDestroyEvent) {
-        logRemoval(event.block)
-    }
 
     fun restore() {
         println("Restoring ${SchipaoLB.world.name}, with ${mutatedChunks.size} chunks")
