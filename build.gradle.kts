@@ -13,10 +13,17 @@ repositories {
     maven("https://repo.papermc.io/repository/maven-public/") {
         name = "papermc-repo"
     }
+    maven("https://jitpack.io")
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+    compileOnly("com.saicone.rtag:rtag:1.5.14")
+    // Other modules
+    compileOnly("com.saicone.rtag:rtag-block:1.5.14")
+    compileOnly("com.saicone.rtag:rtag-entity:1.5.14")
+    compileOnly("com.saicone.rtag:rtag-item:1.5.14")
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0-RC")
 }
