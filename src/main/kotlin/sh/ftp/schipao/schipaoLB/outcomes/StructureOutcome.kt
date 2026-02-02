@@ -1,5 +1,6 @@
 package sh.ftp.schipao.schipaoLB.outcomes
 
+import com.saicone.rtag.stream.TStream
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.Bukkit
@@ -39,6 +40,9 @@ class StructureOutcome(
             return
         }
 
+        val nbt = TStream.COMPOUND.fromFile(structureFile)
+        println(nbt)
+
         val structureManager = Bukkit.getStructureManager()
         val loadedStructure = structureManager.loadStructure(structureFile)
 
@@ -58,3 +62,7 @@ class StructureOutcome(
         )
     }
 }
+
+data class StructureNBT(
+    val size: List<Int>
+)
