@@ -17,13 +17,14 @@ class SchipaoLB : JavaPlugin() {
     companion object {
         lateinit var dataFolder: File
         lateinit var world: World
+        lateinit var worldProtector: WorldProtector
     }
 
-    lateinit var protector: WorldProtector
 
     override fun onEnable() {
+        world = server.respawnWorld
         Companion.dataFolder = this@SchipaoLB.dataFolder
-        protector = WorldProtector(server.respawnWorld)
+        worldProtector = WorldProtector()
         println("Initialized worldProtector")
         loadConfig()
         println("Loaded config")
@@ -31,12 +32,12 @@ class SchipaoLB : JavaPlugin() {
         println("Initialized GameManager")
         println(Configuration.curr)
         server.pluginManager.registerEvents(LBEventListener(Material.DRIED_KELP_BLOCK, loadOutcomes()), this)
-        server.pluginManager.registerEvents(protector, this)
+        server.pluginManager.registerEvents(worldProtector, this)
         server.pluginManager.registerEvents(SpawnListener(), this)
         println("Registered events")
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) {
             it.registrar().let { r ->
-                r.register(worldProtectorCmd(protector))
+                r.register(worldProtectorCmd(worldProtector))
                 r.register(GameManager.cmd())
             }
         }
@@ -44,7 +45,7 @@ class SchipaoLB : JavaPlugin() {
     }
 
     override fun onDisable() {
-        protector.restore()
+        worldProtector.restore()
     }
 
     @OptIn(ExperimentalSerializationApi::class)

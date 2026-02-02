@@ -1,13 +1,15 @@
 package sh.ftp.schipao.schipaoLB.outcomes
 
-import com.saicone.rtag.stream.TStream
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.Bukkit
 import org.bukkit.block.Block
+import org.bukkit.block.BlockState
 import org.bukkit.block.structure.Mirror
 import org.bukkit.block.structure.StructureRotation
 import org.bukkit.entity.Player
+import org.bukkit.generator.LimitedRegion
+import org.bukkit.util.BlockTransformer
 import sh.ftp.schipao.schipaoLB.SchipaoLB
 import java.io.File
 import java.util.*
@@ -25,14 +27,11 @@ class StructureOutcome(
 
     override fun run(player: Player, block: Block) {
         val baseLocation = block.location.clone().add(
-            offsetX.toDouble(),
-            offsetY.toDouble(),
-            offsetZ.toDouble()
+            offsetX.toDouble(), offsetY.toDouble(), offsetZ.toDouble()
         )
 
         val structureFile = File(
-            SchipaoLB.dataFolder,
-            "structures/$structure.nbt"
+            SchipaoLB.dataFolder, "structures/$structure.nbt"
         )
 
         if (!structureFile.exists()) {
@@ -40,17 +39,13 @@ class StructureOutcome(
             return
         }
 
-        val nbt = TStream.COMPOUND.fromFile(structureFile)
-        println(nbt)
-
         val structureManager = Bukkit.getStructureManager()
         val loadedStructure = structureManager.loadStructure(structureFile)
 
-        val rotationValue = if (rotation)
-            StructureRotation.entries.toTypedArray().random()
-        else
-            StructureRotation.NONE
+        val rotationValue = if (rotation) StructureRotation.entries.toTypedArray().random()
+        else StructureRotation.NONE
 
+        @Suppress("UnstableApiUsage")
         loadedStructure.place(
             baseLocation,
             entities,
@@ -58,11 +53,24 @@ class StructureOutcome(
             Mirror.NONE,
             0,
             1.0f,
-            Random()
-        )
+            Random(),
+            listOf(
+                object : BlockTransformer {
+                    override fun transform(
+                        region: LimitedRegion,
+                        x: Int,
+                        y: Int,
+                        z: Int,
+                        current: BlockState,
+                        state: BlockTransformer.TransformationState
+                    ): BlockState {
+                        SchipaoLB.worldProtector.addBlock(current.block)
+                        state.world.block
+                        state.original.block
+                        return current
+                    }
+                }
+            ),
+            listOf())
     }
 }
-
-data class StructureNBT(
-    val size: List<Int>
-)
