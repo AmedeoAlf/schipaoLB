@@ -33,7 +33,7 @@ class SchipaoLB : JavaPlugin() {
         println(Configuration.curr)
         server.pluginManager.registerEvents(LBEventListener(Material.DRIED_KELP_BLOCK, loadOutcomes()), this)
         server.pluginManager.registerEvents(worldProtector, this)
-        server.pluginManager.registerEvents(SpawnListener(), this)
+        server.pluginManager.registerEvents(LobbyListener(), this)
         println("Registered events")
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) {
             it.registrar().let { r ->
