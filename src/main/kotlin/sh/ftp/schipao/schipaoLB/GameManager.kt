@@ -8,6 +8,7 @@ import net.kyori.adventure.text.format.TextColor.color
 import net.kyori.adventure.title.Title
 import org.bukkit.Color
 import org.bukkit.DyeColor
+import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.World
@@ -131,6 +132,7 @@ class GameManager(val world: World) {
         val removedFrom = teams.find { it.players.remove(player) }
         if (removedFrom == null) return null
         player.inventory.clear()
+        player.gameMode = GameMode.ADVENTURE
         if (state == GameState.PLAYING && removedFrom.players.isEmpty()) {
             world.sendMessage {
                 text("Team ")
@@ -176,6 +178,7 @@ class GameManager(val world: World) {
         state = GameState.PLAYING
         teams.forEach { team ->
             team.players.forEach { player ->
+                player.gameMode = GameMode.SURVIVAL
                 player.teleport(team.spawnPoint)
                 player.inventory.clear()
                 player.showTitle(
