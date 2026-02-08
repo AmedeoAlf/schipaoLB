@@ -148,6 +148,8 @@ class GameManager(val world: World) {
             leaveTeam(it)
             it.teleport(Configuration.curr.spawnPos.toLocation(world))
         }
+
+        SchipaoLB.worldProtector.restore()
     }
 
     fun leaveTeam(player: Player): Team? {
