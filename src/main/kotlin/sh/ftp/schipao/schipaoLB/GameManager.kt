@@ -128,6 +128,28 @@ class GameManager(val world: World) {
         })
     }
 
+    private fun checkGameFinished() {
+        if (curr.teams.filter { it.players.isNotEmpty() }.size >= 2) return
+
+        // ?: teams[0] is a fallback for "cheated" games with 1 team
+        val winners = curr.teams.find { it.players.isNotEmpty() } ?: teams[0]
+        world.players.forEach { player ->
+            player.showTitle(
+                Title.title(
+                    text("Team ")
+                        .append(winners.component())
+                        .append { text(" has won!").color(color(Color.YELLOW.asRGB())) },
+                    text("Congratulations to " + winners.players.joinToString { it.name })
+                )
+            )
+        }
+        state = GameState.LOBBY
+        winners.players.toList().forEach {
+            leaveTeam(it)
+            it.teleport(Configuration.curr.spawnPos.toLocation(world))
+        }
+    }
+
     fun leaveTeam(player: Player): Team? {
         val removedFrom = teams.find { it.players.remove(player) }
         if (removedFrom == null) return null
@@ -139,20 +161,7 @@ class GameManager(val world: World) {
                     .append(removedFrom.component())
                     .append(text(" has been destroyed"))
             }
-            if (curr.teams.filter { it.players.isNotEmpty() }.size < 2) {
-                val winners =
-                    curr.teams.find { it.players.isNotEmpty() } ?: teams[0] // Fallback for "cheated" games with 1 team
-                world.players.forEach { player ->
-                    player.showTitle(
-                        Title.title(
-                            text("Team ")
-                                .append(winners.component())
-                                .append { text(" has won!").color(color(Color.YELLOW.asRGB())) },
-                            text("Congratulations to " + winners.players.joinToString { it.name })
-                        )
-                    )
-                }
-            }
+            checkGameFinished()
         }
         return removedFrom
     }
