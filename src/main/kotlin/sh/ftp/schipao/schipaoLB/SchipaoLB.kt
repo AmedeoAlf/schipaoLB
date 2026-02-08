@@ -10,6 +10,8 @@ import org.bukkit.plugin.java.JavaPlugin
 import sh.ftp.schipao.schipaoLB.outcomes.LBOutcome
 import sh.ftp.schipao.schipaoLB.outcomes.json
 import java.io.File
+import java.util.logging.Level
+import java.util.logging.Logger
 
 
 class SchipaoLB : JavaPlugin() {
@@ -18,30 +20,33 @@ class SchipaoLB : JavaPlugin() {
         lateinit var dataFolder: File
         lateinit var world: World
         lateinit var worldProtector: WorldProtector
+
+        private lateinit var logger: Logger
+        fun log(msg: String) = logger.log(Level.INFO, msg)
     }
 
 
     override fun onEnable() {
+        Companion.logger = logger
         world = server.respawnWorld
         Companion.dataFolder = this@SchipaoLB.dataFolder
         worldProtector = WorldProtector()
-        println("Initialized worldProtector")
+        log("WorldProtector initialized")
         loadConfig()
-        println("Loaded config")
+        log("Loaded config ${Configuration.curr}")
         GameManager.curr = GameManager(server.respawnWorld)
-        println("Initialized GameManager")
-        println(Configuration.curr)
+        log("Initialized GameManager")
         server.pluginManager.registerEvents(LBEventListener(Material.DRIED_KELP_BLOCK, loadOutcomes()), this)
         server.pluginManager.registerEvents(worldProtector, this)
         server.pluginManager.registerEvents(LobbyListener(), this)
-        println("Registered events")
+        log("Registered events")
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) {
             it.registrar().let { r ->
                 r.register(worldProtectorCmd(worldProtector))
                 r.register(GameManager.cmd())
             }
         }
-        println("Registered commands")
+        log("Registered commands")
     }
 
     override fun onDisable() {

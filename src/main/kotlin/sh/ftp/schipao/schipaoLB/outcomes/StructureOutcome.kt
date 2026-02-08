@@ -28,7 +28,7 @@ class StructureOutcome(
     override fun run(player: Player, block: Block) {
         val loadedStructure = LBStructureManager.getStructure(structure)
         if (loadedStructure == null) {
-            println("Structure '$structure' not found")
+            SchipaoLB.log("Structure '$structure' not found")
             return
         }
 

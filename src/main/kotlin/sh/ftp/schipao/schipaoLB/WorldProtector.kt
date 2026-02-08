@@ -9,6 +9,7 @@ import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.block.Block
 import org.bukkit.block.data.BlockData
+import org.bukkit.entity.EntityType
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
@@ -18,6 +19,8 @@ import org.bukkit.event.block.BlockFormEvent
 import org.bukkit.event.block.BlockMultiPlaceEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityExplodeEvent
+import org.bukkit.event.entity.EntitySpawnEvent
+import java.util.UUID
 
 fun BlockPosition.chunkPosition() = (blockY() + 64) shl 4 or (blockX() and 0xf) shl 4 or (blockZ() and 0xf)
 
@@ -44,6 +47,7 @@ class WorldProtector : Listener {
     }
 
     private val mutatedChunks = mutableMapOf<Long, MutatedChunk>()
+    private val newEntities = mutableListOf<UUID>()
 
     fun logRemoval(block: Block) = logRemoval(block, block.blockData)
 
@@ -90,12 +94,19 @@ class WorldProtector : Listener {
             logCreation(it.block)
         }
 
+    @EventHandler
+    fun onEntitySpawn(event: EntitySpawnEvent) =
+        when (event.entityType) {
+            EntityType.PLAYER -> {}
+            else -> newEntities.add(event.entity.uniqueId)
+        }
+
     fun restore() {
-        println("Restoring ${SchipaoLB.world.name}, with ${mutatedChunks.size} chunks")
+        SchipaoLB.log("Restoring ${SchipaoLB.world.name}, with ${mutatedChunks.size} chunks")
         mutatedChunks.forEach { (key, data) ->
             val chunk = SchipaoLB.world.getChunkAt(key)
             SchipaoLB.world.loadChunk(chunk)
-            println("Restoring chunk x=${chunk.x} z=${chunk.z} (${data.blocks.size} actions)")
+            SchipaoLB.log("Restoring chunk x=${chunk.x} z=${chunk.z} (${data.blocks.size} actions)")
 
             data.blocks.reversed().forEach { (chunkPos, data) ->
                 if (data == null) {
@@ -109,9 +120,15 @@ class WorldProtector : Listener {
             }
         }
         mutatedChunks.clear()
+
+        SchipaoLB.log("Removing ${newEntities.size} entities")
+        newEntities.forEach { SchipaoLB.world.getEntity(it)?.remove() }
+        newEntities.clear()
     }
 
     fun apply() {
+        SchipaoLB.log("Forgetting ${newEntities.size} new entities and ${mutatedChunks.size} chunks")
+        newEntities.clear()
         mutatedChunks.clear()
     }
 }
