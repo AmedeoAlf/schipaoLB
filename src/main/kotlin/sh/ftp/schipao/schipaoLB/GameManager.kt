@@ -98,7 +98,7 @@ class GameManager(val world: World) {
             team ?: teams.reduce { acc, team -> if (acc.players.size <= team.players.size) acc else team }
         smallestTeam.players.add(player)
         player.world.sendMessage {
-            text("${player.name} joined the game in team ")
+            text("${player.name} joined team ")
                 .append { smallestTeam.component() }
         }
         if (team == null) player.sendMessage {
@@ -140,11 +140,14 @@ class GameManager(val world: World) {
                     .append(text(" has been destroyed"))
             }
             if (curr.teams.filter { it.players.isNotEmpty() }.size < 2) {
-                val winners = curr.teams.find { it.players.isNotEmpty() } ?: teams[0] // Fallback for "cheated" games with 1 team
+                val winners =
+                    curr.teams.find { it.players.isNotEmpty() } ?: teams[0] // Fallback for "cheated" games with 1 team
                 world.players.forEach { player ->
                     player.showTitle(
                         Title.title(
-                            winners.component().append { text(" has won!").color(color(Color.YELLOW.asRGB())) },
+                            text("Team ")
+                                .append(winners.component())
+                                .append { text(" has won!").color(color(Color.YELLOW.asRGB())) },
                             text("Congratulations to " + winners.players.joinToString { it.name })
                         )
                     )
