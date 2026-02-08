@@ -2,6 +2,7 @@ package sh.ftp.schipao.schipaoLB
 
 import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent
 import org.bukkit.Bukkit
+import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
@@ -30,32 +31,38 @@ class LobbyListener : Listener {
 
     @EventHandler
     fun onPlayerInteract(event: PlayerInteractEvent) {
-        if (GameManager.curr.state != GameManager.GameState.LOBBY) return
-
         when (event.action) {
             Action.RIGHT_CLICK_AIR, Action.RIGHT_CLICK_BLOCK -> {}
             else -> return
         }
-
-        val teamFromWoolBlock = event.item
-            ?.type
-            ?.woolDyeColor()
-            ?.let { col ->
-                GameManager.curr.teams.find { it.dyeColor == col }
-            }
 
         if (event.clickedBlock != null
             && Configuration.curr.joinSign == event.clickedBlock!!.position
         ) {
             GameManager.curr.playerJoin(event.player)
             event.isCancelled = true
-        } else if (teamFromWoolBlock != null) {
-            GameManager.curr.playerJoin(
-                event.player,
-                teamFromWoolBlock
-            )
-            event.isCancelled = true
+            return
+        } else if (event.item == null) return
+        if (GameManager.curr.state != GameManager.GameState.LOBBY) return
+
+
+        when (event.item!!.type) {
+            Material.RED_BED -> GameManager.curr.playerLeave(event.player)
+            Material.DIAMOND -> GameManager.curr.startGame()
+            else -> {
+                val teamFromWoolBlock = event.item!!.type
+                    .woolDyeColor()
+                    ?.let { col ->
+                        GameManager.curr.teams.find { it.dyeColor == col }
+                    }
+                if (teamFromWoolBlock == null) return
+                GameManager.curr.playerJoin(
+                    event.player,
+                    teamFromWoolBlock
+                )
+            }
         }
+        event.isCancelled = true
     }
 
     @EventHandler
