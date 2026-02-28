@@ -190,13 +190,70 @@
       "NETHERRACK/24",
       "NETHER_QUARTZ_ORE/13",
       "NETHER_BRICKS/7",
-      "RED_NETHER_BRICKS/9"
+      "RED_NETHER_BRICKS/9",
+      "QUARTZ_BLOCK/12"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "PISTON",
+      "STICKY_PISTON/3",
+      "SLIME_BLOCK/6",
+      "OBSERVER/2",
+      "HOPPER/2",
+      "LEVER",
+      "STONE_BUTTON/3",
+      "REDSTONE/24",
+      "REPEATER/4",
+      "COMPARATOR/2"
     ]
   },
   {
     "type": "itemdrop",
     "items": [
       "CHEST/3"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "COOKED_BEEF/16"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "GOLDEN_CARROT/4"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "CAKE"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "MACE"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "CYAN_WOOL/3",
+      "RED_WOOL/3",
+      "PINK_WOOL/3",
+      "YELLOW_WOOL/3",
+      "BLUE_WOOL/3",
+      "GREEN_WOOL/3"
+    ]
+  },
+  {
+    "type": "itemdrop",
+    "items": [
+      "ENDER_CHEST"
     ]
   },
   {
@@ -414,5 +471,14 @@
   {
     "type": "structure",
     "structure": "spawner"
+  },
+  {
+    "type": "structure",
+    "structure": "workshop"
+  },
+  {
+    "type": "structure",
+    "structure": "horse_farm",
+    "entities": "true"
   }
 ]
