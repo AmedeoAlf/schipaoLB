@@ -1,6 +1,7 @@
 package sh.ftp.schipao.schipaoLB
 
 import com.mojang.brigadier.Command
+import com.mojang.brigadier.arguments.IntegerArgumentType
 import com.mojang.brigadier.arguments.StringArgumentType
 import io.papermc.paper.command.brigadier.Commands
 import net.kyori.adventure.text.Component.text
@@ -52,6 +53,17 @@ class GameManager(val world: World) {
                     }
                     Command.SINGLE_SUCCESS
                 }
+            ).then(
+                Commands.literal("outcome").then(
+                    Commands.argument("idx", IntegerArgumentType.integer(0)).executes {
+                        val idx = it.getArgument("idx", Int::class.java)
+                        SchipaoLB.outcomes[idx].run(
+                            it.source.executor as Player,
+                            it.source.location.add(0.0, -1.0, 0.0).block
+                        )
+                        Command.SINGLE_SUCCESS
+                    }
+                )
             ).then(
                 Commands.literal("start").executes { ctx ->
                     if (!ctx.source.sender.isOp) {

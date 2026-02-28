@@ -3,7 +3,10 @@
 package sh.ftp.schipao.schipaoLB
 
 import com.destroystokyo.paper.event.block.BlockDestroyEvent
+import com.mojang.brigadier.Command
+import io.papermc.paper.command.brigadier.Commands
 import io.papermc.paper.math.BlockPosition
+import net.kyori.adventure.text.Component
 import org.bukkit.Chunk
 import org.bukkit.Material
 import org.bukkit.World
@@ -48,6 +51,31 @@ class WorldProtector : Listener {
 
     private val mutatedChunks = mutableMapOf<Long, MutatedChunk>()
     private val newEntities = mutableListOf<UUID>()
+
+
+    fun cmd(name: String = "wp") =
+        Commands.literal(name)
+            .then(Commands.literal("save").executes {
+                apply()
+                Command.SINGLE_SUCCESS
+            })
+            .then(Commands.literal("list").executes { ctx ->
+                mutatedChunks.forEach { lng, chunk ->
+                    ctx.source.sender.sendMessage {
+                        Component.text("For chunk $lng")
+                    }
+                    chunk.blocks.forEach { block ->
+                        ctx.source.sender.sendMessage {
+                            Component.text("${block.chunkPos} ${block.data}")
+                        }
+                    }
+                }
+                Command.SINGLE_SUCCESS
+            })
+            .then(Commands.literal("reset").executes {
+                restore()
+                Command.SINGLE_SUCCESS
+            }).build()
 
     fun logRemoval(block: Block) = logRemoval(block, block.blockData)
 

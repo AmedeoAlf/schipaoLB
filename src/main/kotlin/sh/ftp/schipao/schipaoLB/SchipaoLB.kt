@@ -20,6 +20,7 @@ class SchipaoLB : JavaPlugin() {
         lateinit var dataFolder: File
         lateinit var world: World
         lateinit var worldProtector: WorldProtector
+        lateinit var outcomes: List<LBOutcome>
 
         private lateinit var logger: Logger
         fun log(msg: String) = logger.log(Level.INFO, msg)
@@ -34,15 +35,17 @@ class SchipaoLB : JavaPlugin() {
         log("WorldProtector initialized")
         loadConfig()
         log("Loaded config ${Configuration.curr}")
+        outcomes = loadOutcomes()
+        log("Loaded outcomes")
         GameManager.curr = GameManager(server.respawnWorld)
         log("Initialized GameManager")
-        server.pluginManager.registerEvents(LBEventListener(Material.DRIED_KELP_BLOCK, loadOutcomes()), this)
+        server.pluginManager.registerEvents(LBEventListener(Material.DRIED_KELP_BLOCK, outcomes), this)
         server.pluginManager.registerEvents(worldProtector, this)
         server.pluginManager.registerEvents(LobbyListener(), this)
         log("Registered events")
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) {
             it.registrar().let { r ->
-                r.register(worldProtectorCmd(worldProtector))
+                r.register(worldProtector.cmd("wp"))
                 r.register(GameManager.cmd())
             }
         }
