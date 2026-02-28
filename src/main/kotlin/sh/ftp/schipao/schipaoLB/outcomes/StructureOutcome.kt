@@ -2,6 +2,7 @@ package sh.ftp.schipao.schipaoLB.outcomes
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.BlockState
 import org.bukkit.block.structure.Mirror
@@ -59,11 +60,15 @@ class StructureOutcome(
                         current: BlockState,
                         state: BlockTransformer.TransformationState
                     ): BlockState {
-                        val block = region.getBlockState(current.x, current.y, current.z).block
+                        val block = region.getBlockState(x, y, z).block
                         if (block.isEmpty) {
                             SchipaoLB.worldProtector.logCreation(block)
                         } else {
-                            SchipaoLB.worldProtector.logRemoval(block)
+                            if (block.blockData.material == Material.BARRIER) {
+                                SchipaoLB.worldProtector.logRemoval(block,Material.AIR.createBlockData())
+                            } else {
+                                SchipaoLB.worldProtector.logRemoval(block)
+                            }
                         }
                         return current
                     }
