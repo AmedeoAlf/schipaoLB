@@ -15,9 +15,12 @@ import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityExplodeEvent
 import sh.ftp.schipao.schipaoLB.outcomes.LBOutcome
 
+@Suppress("UnstableApiUsage")
 val Block.position: BlockPosition get() = Position.block(x, y, z)
 
 class LBEventListener(val block: Material, val outcomes: Collection<LBOutcome>) : Listener {
+    val MAX_LUCK = outcomes.maxOf{ it.lucky }
+    val MIN_LUCK = outcomes.minOf{ it.lucky }
 
     @EventHandler(priority = EventPriority.HIGH)
     fun onBlockPlace(event: BlockPlaceEvent) {

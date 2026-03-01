@@ -87,6 +87,10 @@ class GameManager(val world: World) {
         val spawnPoint: Location,
         val dyeColor: DyeColor,
     ) {
+        val deathsLeft: Int
+            get() = players.sumOf { Configuration.curr.maxDeaths - curr.getPlayerDeaths(it).score }
+
+        var previousLuck = 0f
         fun component() = text(dyeColor.name)
             .color(color(dyeColor.color.asRGB()))
     }
