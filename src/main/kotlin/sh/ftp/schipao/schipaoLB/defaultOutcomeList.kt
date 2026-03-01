@@ -113,14 +113,36 @@ val defaultOutcomeList: List<LBOutcome> = listOf(
         itemStackFromString("NETHERRACK/24"),
         itemStackFromString("NETHER_QUARTZ_ORE/13"),
         itemStackFromString("NETHER_BRICKS/7"),
-        itemStackFromString("RED_NETHER_BRICKS/9")
+        itemStackFromString("RED_NETHER_BRICKS/9"),
+        itemStackFromString("QUARTZ_BLOCK/2")
     )),
     ItemDropOutcome(listOf(
-        itemStackFromString("CHEST/3")
+        itemStackFromString("PISTON"),
+        itemStackFromString("STICKY_PISTON/3"),
+        itemStackFromString("SLIME_BLOCK/6"),
+        itemStackFromString("OBSERVER/2"),
+        itemStackFromString("HOPPER/2"),
+        itemStackFromString("LEVER"),
+        itemStackFromString("STONE_BUTTON/3"),
+        itemStackFromString("REDSTONE/24"),
+        itemStackFromString("REPEATER/4"),
+        itemStackFromString("COMPARATOR/2")
     )),
+    ItemDropOutcome(listOf(itemStackFromString("CHEST/3"))),
+    ItemDropOutcome(listOf(itemStackFromString("COOKED_BEEF/16"))),
+    ItemDropOutcome(listOf(itemStackFromString("GOLDEN_CARROT/4"))),
+    ItemDropOutcome(listOf(itemStackFromString("CAKE"))),
+    ItemDropOutcome(listOf(itemStackFromString("MACE"))),
     ItemDropOutcome(listOf(
-        itemStackFromString("ELYTRA")
+        itemStackFromString("CYAN_WOOL/3"),
+        itemStackFromString("RED_WOOL/3"),
+        itemStackFromString("PINK_WOOL/3"),
+        itemStackFromString("YELLOW_WOOL/3"),
+        itemStackFromString("BLUE_WOOL/3"),
+        itemStackFromString("GREEN_WOOL/3")
     )),
+    ItemDropOutcome(listOf(itemStackFromString("ENDER_CHEST"))),
+    ItemDropOutcome(listOf(itemStackFromString("ELYTRA"))),
     ItemDropOutcome(listOf(
         itemStackFromString("FIREWORK_ROCKET/12")
     )),
@@ -176,5 +198,7 @@ val defaultOutcomeList: List<LBOutcome> = listOf(
     StructureOutcome("lava_cage"),
     StructureOutcome("temple"),
     StructureOutcome("loot_crate"),
-    StructureOutcome("spawner")
+    StructureOutcome("spawner"),
+    StructureOutcome("workshop"),
+    StructureOutcome("horse_farm", entities = true)
 )
