@@ -9,7 +9,8 @@ import sh.ftp.schipao.schipaoLB.mm
 
 @SerialName("title")
 @Serializable
-class TitleOutcome(val title: String, val subtitle: String, val forTicks: Int = 40) : LBOutcome {
+class TitleOutcome(val title: String, val subtitle: String, val forTicks: Int = 40, override val lucky: Float = 0f) :
+    LBOutcome {
     override fun run(player: Player, block: Block) {
         player.showTitle(
             Title.title(

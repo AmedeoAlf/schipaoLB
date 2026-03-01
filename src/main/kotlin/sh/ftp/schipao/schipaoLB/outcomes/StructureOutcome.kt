@@ -23,7 +23,8 @@ class StructureOutcome(
     val offsetY: Int = 0,
     val offsetZ: Int = 0,
     val rotation: Boolean = true,
-    val entities: Boolean = false
+    val entities: Boolean = false,
+    override val lucky: Float = 0f
 ) : LBOutcome {
 
     override fun run(player: Player, block: Block) {

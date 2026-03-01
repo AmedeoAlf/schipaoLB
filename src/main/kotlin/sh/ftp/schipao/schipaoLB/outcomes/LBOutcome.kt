@@ -8,6 +8,7 @@ import org.bukkit.block.Block
 import org.bukkit.entity.Player
 
 interface LBOutcome {
+    val lucky: Float
     fun run(player: Player, block: Block)
 }
 

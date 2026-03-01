@@ -9,7 +9,7 @@ import sh.ftp.schipao.schipaoLB.parseQuantity
 
 @SerialName("mob")
 @Serializable
-class MobOutcome(val entities: List<String>) : LBOutcome {
+class MobOutcome(val entities: List<String>, override val lucky: Float = 0f) : LBOutcome {
     // "PIG+PIG+PIG+PIG" => una stack di 4 PIG
     // "PIG/4" => 4 PIG
     override fun run(player: Player, block: Block) {

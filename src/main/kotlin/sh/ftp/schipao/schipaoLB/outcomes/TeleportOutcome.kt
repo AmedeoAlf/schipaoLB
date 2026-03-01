@@ -7,7 +7,7 @@ import org.bukkit.entity.Player
 
 @SerialName("teleport")
 @Serializable
-class TeleportOutcome(val yDistance: Double) : LBOutcome {
+class TeleportOutcome(val yDistance: Double, override val lucky: Float = 0f) : LBOutcome {
     override fun run(player: Player, block: Block) {
         player.teleport(player.location.add(0.0, yDistance, 0.0))
     }

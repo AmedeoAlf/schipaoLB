@@ -60,7 +60,7 @@ fun itemStackFromString(str: String): ItemStack {
 
 @Serializable(with = ItemDropOutcomeSerializer::class)
 @SerialName("itemdrop")
-class ItemDropOutcome(val items: Collection<ItemStack>) : LBOutcome {
+class ItemDropOutcome(val items: Collection<ItemStack>, override val lucky: Float = 0f) : LBOutcome {
     override fun run(player: Player, block: Block) {
         player.give(items, true)
     }
@@ -68,10 +68,12 @@ class ItemDropOutcome(val items: Collection<ItemStack>) : LBOutcome {
 
 class ItemDropOutcomeSerializer : KSerializer<ItemDropOutcome> {
     private val itemListSerializer = ListSerializer(String.serializer())
+    private val floatSerializer = Float.serializer()
 
     override val descriptor: SerialDescriptor
         get() = buildClassSerialDescriptor("itemdrop") {
             element("items", itemListSerializer.descriptor)
+            element("lucky", floatSerializer.descriptor)
         }
 
 
@@ -83,25 +85,30 @@ class ItemDropOutcomeSerializer : KSerializer<ItemDropOutcome> {
             encodeSerializableElement(
                 descriptor, 0, itemListSerializer, encodedItems
             )
+            encodeSerializableElement(
+                descriptor, 1, floatSerializer, value.lucky
+            )
         }
     }
 
     override fun deserialize(decoder: Decoder): ItemDropOutcome {
         return decoder.decodeStructure(descriptor) {
             var items: List<String> = emptyList()
+            var lucky = 0f
 
             while (true) {
                 when (val index = decodeElementIndex(descriptor)) {
                     0 -> items = decodeSerializableElement(
                         descriptor, 0, itemListSerializer
                     )
+                    1 -> lucky = decodeSerializableElement(descriptor, 1, floatSerializer)
 
                     CompositeDecoder.DECODE_DONE -> break
                     else -> error("Unexpected index: $index")
                 }
             }
 
-            ItemDropOutcome(items.map { itemStackFromString(it) })
+            ItemDropOutcome(items.map { itemStackFromString(it) }, lucky)
         }
     }
 

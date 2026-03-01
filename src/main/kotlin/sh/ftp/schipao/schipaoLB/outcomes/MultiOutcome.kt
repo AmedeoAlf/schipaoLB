@@ -7,7 +7,7 @@ import org.bukkit.entity.Player
 
 @SerialName("multi")
 @Serializable
-class MultiOutcome(val outcomes: List<LBOutcome>) : LBOutcome {
+class MultiOutcome(val outcomes: List<LBOutcome>, override val lucky: Float = 0f) : LBOutcome {
     override fun run(player: Player, block: Block) {
         outcomes.forEach { it.run(player, block) }
     }

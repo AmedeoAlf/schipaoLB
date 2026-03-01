@@ -8,7 +8,7 @@ import sh.ftp.schipao.schipaoLB.mm
 
 @Serializable
 @SerialName("message")
-class MessageOutcome(val message: String): LBOutcome {
+class MessageOutcome(val message: String, override val lucky: Float = 0f): LBOutcome {
     override fun run(player: Player, block: Block) {
         player.sendMessage { mm(message) }
     }
