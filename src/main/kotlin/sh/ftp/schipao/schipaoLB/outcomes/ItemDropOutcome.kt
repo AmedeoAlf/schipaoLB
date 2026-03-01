@@ -12,19 +12,19 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.encoding.*
 import net.kyori.adventure.key.Key
-import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
 import sh.ftp.schipao.schipaoLB.mm
+import sh.ftp.schipao.schipaoLB.mmSerialize
 import sh.ftp.schipao.schipaoLB.parseQuantity
 
 fun ItemStack.toSerializedString(): String = listOf(
     "${type.name}/${amount}",
-    if (itemMeta.hasCustomName()) MiniMessage.miniMessage().serialize(itemMeta.customName()!!) else "",
-    lore()?.joinToString("\n") { MiniMessage.miniMessage().serialize(it) } ?: "",
+    if (itemMeta.hasCustomName()) mmSerialize(itemMeta.customName()!!) else "",
+    lore()?.joinToString("\n") { mmSerialize(it) } ?: "",
     enchantments.map { "${it.key.key}/${it.value}" }.joinToString("\n"),
     (itemMeta as Damageable).damage.toString()
 ).joinToString(";") {

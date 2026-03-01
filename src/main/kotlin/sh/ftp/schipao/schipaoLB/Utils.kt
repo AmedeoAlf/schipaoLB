@@ -1,6 +1,7 @@
 package sh.ftp.schipao.schipaoLB
 
 import io.papermc.paper.math.BlockPosition
+import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.DyeColor
 import org.bukkit.Material
@@ -58,3 +59,4 @@ fun DyeColor.toWool() = when (this) {
 }
 
 fun mm(serialized: String) = MiniMessage.miniMessage().deserialize(serialized)
+fun mmSerialize(component: Component) = MiniMessage.miniMessage().serialize(component)
