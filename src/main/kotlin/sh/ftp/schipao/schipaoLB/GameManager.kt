@@ -124,18 +124,18 @@ class GameManager(val world: World) {
         curr.teams.forEach { team ->
             player.inventory.setItem(team.idx, ItemStack.of(team.dyeColor.toWool()).apply {
                 itemMeta = itemMeta.apply {
-                    displayName(text("Join team ").append { team.component() })
+                    customName(text("Join team ").append { team.component() })
                 }
             })
         }
         player.inventory.setItem(7, ItemStack.of(Material.DIAMOND).apply {
             itemMeta = itemMeta.apply {
-                displayName(text("START GAME").color(color(Color.AQUA.asRGB())))
+                customName(text("START GAME").color(color(Color.AQUA.asRGB())))
             }
         })
         player.inventory.setItem(8, ItemStack.of(Material.RED_BED).apply {
             itemMeta = itemMeta.apply {
-                displayName(text("LEAVE GAME"))
+                customName(text("LEAVE GAME"))
             }
         })
     }
