@@ -12,18 +12,19 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.encoding.*
 import net.kyori.adventure.key.Key
-import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
+import sh.ftp.schipao.schipaoLB.mm
 import sh.ftp.schipao.schipaoLB.parseQuantity
 
 fun ItemStack.toSerializedString(): String = listOf(
     "${type.name}/${amount}",
-    displayName().toString(),
-    lore()?.joinToString("\n") ?: "",
+    if (itemMeta.hasCustomName()) MiniMessage.miniMessage().serialize(itemMeta.customName()!!) else "",
+    lore()?.joinToString("\n") { MiniMessage.miniMessage().serialize(it) } ?: "",
     enchantments.map { "${it.key.key}/${it.value}" }.joinToString("\n"),
     (itemMeta as Damageable).damage.toString()
 ).joinToString(";") {
@@ -31,7 +32,7 @@ fun ItemStack.toSerializedString(): String = listOf(
 }
 
 
-fun fromSerializedString(str: String): ItemStack {
+fun itemStackFromString(str: String): ItemStack {
     val fields = str.split(";").map {
         it.trim().replace("\\n", "\n").replace("\\,", ";")
     }
@@ -40,8 +41,8 @@ fun fromSerializedString(str: String): ItemStack {
     val (type, amount) = parseQuantity(typeAndAmount)
     return ItemStack.of(Material.getMaterial(type)!!, amount).apply {
         itemMeta = itemMeta.apply {
-            if (itemDisplayName != "") displayName(Component.text(itemDisplayName))
-            if (itemLore != "") lore(listOf(Component.text(itemLore)))
+            if (itemDisplayName != "") customName(mm(itemDisplayName))
+            if (itemLore != "") lore(listOf(mm(itemLore)))
             if (this is Damageable && itemDamage != "") damage = runCatching { itemDamage.toInt() }.getOrDefault(0)
         }
         enchantments
@@ -78,7 +79,7 @@ class ItemDropOutcomeSerializer : KSerializer<ItemDropOutcome> {
         encoder: Encoder, value: ItemDropOutcome
     ) {
         encoder.encodeStructure(descriptor) {
-            val encodedItems = value.items.map { it.toSerializedString() } // your encoding
+            val encodedItems = value.items.map { it.toSerializedString() }
             encodeSerializableElement(
                 descriptor, 0, itemListSerializer, encodedItems
             )
@@ -100,7 +101,7 @@ class ItemDropOutcomeSerializer : KSerializer<ItemDropOutcome> {
                 }
             }
 
-            ItemDropOutcome(items.map { fromSerializedString(it) })
+            ItemDropOutcome(items.map { itemStackFromString(it) })
         }
     }
 

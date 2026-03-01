@@ -12,7 +12,7 @@ import org.bukkit.potion.PotionEffect
 
 @SerialName("effect")
 @Serializable
-class EffectOutcome(val effect: String, val forTicks: Int, val amplifier: Int, val particles: Boolean) : LBOutcome {
+class EffectOutcome(val effect: String, val forTicks: Int, val amplifier: Int, val particles: Boolean = true) : LBOutcome {
     override fun run(player: Player, block: Block) {
         val key = TypedKey.create(RegistryKey.MOB_EFFECT, Key.key(effect))
         val effectType = RegistryAccess.registryAccess().getRegistry(RegistryKey.MOB_EFFECT).get(key)!!

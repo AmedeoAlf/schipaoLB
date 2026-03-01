@@ -4,6 +4,7 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
+import kotlinx.serialization.json.encodeToStream
 import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.plugin.java.JavaPlugin
@@ -62,11 +63,15 @@ class SchipaoLB : JavaPlugin() {
 
         if (!file.exists()) {
             file.parentFile.mkdirs()
-            saveResource("outcomes.json", true)
+            file.outputStream().use {
+                json.encodeToStream(defaultOutcomeList, it)
+            }
         }
         // FIXME: just for development
         file.delete()
-        saveResource("outcomes.json", true)
+        file.outputStream().use {
+            json.encodeToStream(defaultOutcomeList, it)
+        }
 
         return json.decodeFromStream(file.inputStream())
     }
