@@ -60,7 +60,7 @@ class WorldProtector : Listener {
                 Command.SINGLE_SUCCESS
             })
             .then(Commands.literal("list").executes { ctx ->
-                mutatedChunks.forEach { lng, chunk ->
+                mutatedChunks.forEach { (lng, chunk) ->
                     ctx.source.sender.sendMessage {
                         Component.text("For chunk $lng")
                     }
