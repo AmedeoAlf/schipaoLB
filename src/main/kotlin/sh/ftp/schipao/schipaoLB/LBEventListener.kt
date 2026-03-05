@@ -57,6 +57,8 @@ class LBEventListener(val block: Material, val outcomes: List<LBOutcome>, val ga
         event.isCancelled = true
     }
 
+    val computedWeights = HashMap<Float, List<Float>>()
+
     @EventHandler(priority = EventPriority.HIGH)
     fun onBlockBreak(event: BlockBreakEvent) {
         if (event.block.type == block) {
@@ -68,18 +70,18 @@ class LBEventListener(val block: Material, val outcomes: List<LBOutcome>, val ga
 
             val luck = gameManager.getLuckOfPlayer(event.player)
 
-            var sumOfWeights = 0f
-            // Formula = b / (b + (x-a)^2)
-            // a = luck, b = 0.5
-            val weights = outcomes
-                .map {
+            val weights = computedWeights.getOrPut(luck, {
+                var sumOfWeights = 0f
+                // Formula = b / (b + (x-a)^2)
+                // a = luck, b = 0.5
+                outcomes.map {
                     sumOfWeights += (0.5f / (0.5f + (it.lucky - luck).pow(2)))
                     sumOfWeights
                 }
+            })
 
-            SchipaoLB.log("luck=$luck " + weights.joinToString())
             val randomOutcome = weights
-                .binarySearch(Random.nextFloat() * sumOfWeights)
+                .binarySearch(Random.nextFloat() * weights.last())
                 .let { if (it >= 0) it else -it - 1 }
 
             outcomes[randomOutcome].run(event.player, event.block)
