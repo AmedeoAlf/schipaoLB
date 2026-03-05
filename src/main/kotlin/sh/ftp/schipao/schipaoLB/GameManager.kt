@@ -56,6 +56,7 @@ class GameManager(val world: World) {
             ).then(
                 Commands.literal("outcome").then(
                     Commands.argument("idx", IntegerArgumentType.integer(0)).executes {
+                        if (!it.source.sender.isOp) return@executes Command.SINGLE_SUCCESS
                         val idx = it.getArgument("idx", Int::class.java)
                         SchipaoLB.outcomes[idx].run(
                             it.source.executor as Player,
