@@ -163,14 +163,14 @@ val defaultOutcomeList: List<LBOutcome> = listOf(
             itemStackFromString("BONE/32")
         )),
         MobOutcome(listOf("WOLF/10")),
-        TitleOutcome("§8Tame Them All", "Non Maltrattarli")
+        TitleOutcome("<dark_gray>Tame Them All</dark_gray>", "Non Maltrattarli")
     )),
     MultiOutcome(listOf(
         ItemDropOutcome(listOf(
             itemStackFromString("WATER_BUCKET")
         )),
         TeleportOutcome(40.0),
-        TitleOutcome("Be quick...", "§3C'è un secchio d'acqua nel tuo inventario ;-)"),
+        TitleOutcome("Be quick...", "<dark_aqua>C'è un secchio d'acqua nel tuo inventario ;-)</dark_aqua>"),
     )),
     MultiOutcome(listOf(
         EffectOutcome("blindness", 200, 3, true),
@@ -184,7 +184,7 @@ val defaultOutcomeList: List<LBOutcome> = listOf(
             "CREEPER",
             "SLIME/4"
         )),
-        TitleOutcome("§4SURVIVE", "§7Fight till the end...")
+        TitleOutcome("<dark_red>SURVIVE</dark_red>", "<gray>Fight till the end...</gray>")
     )),
     EffectOutcome("slowness", 200, 2),
     EffectOutcome("strength", 1200, 1),
