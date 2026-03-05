@@ -13,6 +13,8 @@ import org.bukkit.event.block.BlockBurnEvent
 import org.bukkit.event.block.BlockExplodeEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityExplodeEvent
+import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.InventoryType
 import sh.ftp.schipao.schipaoLB.outcomes.LBOutcome
 import kotlin.math.pow
 import kotlin.random.Random
@@ -47,6 +49,12 @@ class LBEventListener(val block: Material, val outcomes: List<LBOutcome>, val ga
         if (event.block.type == block) {
             event.isCancelled = true
         }
+    }
+
+    @EventHandler
+    fun onInventoryClickEvent(event: InventoryClickEvent) {
+        if (event.inventory.type !== InventoryType.ANVIL) return
+        event.isCancelled = true
     }
 
     @EventHandler(priority = EventPriority.HIGH)
