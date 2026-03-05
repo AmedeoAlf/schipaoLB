@@ -91,6 +91,9 @@ class GameManager(val world: World) {
         val deathsLeft: Int
             get() = players.sumOf { Configuration.curr.maxDeaths - curr.getPlayerDeaths(it).score }
 
+        val stillAlive: Boolean
+            get() = players.any { it.isConnected }
+
         fun component() = text(dyeColor.name)
             .color(color(dyeColor.color.asRGB()))
 
@@ -148,21 +151,19 @@ class GameManager(val world: World) {
         })
     }
 
-    private fun checkGameFinished() {
-        if (curr.teams.filter { it.players.isNotEmpty() }.size >= 2) return
+    fun checkGameFinished() {
+        if (curr.teams.filter { it.stillAlive }.size >= 2) return
 
         // ?: teams[0] is a fallback for "cheated" games with 1 team
-        val winners = curr.teams.find { it.players.isNotEmpty() } ?: teams[0]
-        world.players.forEach { player ->
-            player.showTitle(
-                Title.title(
-                    text("Team ")
-                        .append(winners.component())
-                        .append { text(" has won!").color(color(Color.YELLOW.asRGB())) },
-                    text("Congratulations to " + winners.players.joinToString { it.name })
-                )
+        val winners = curr.teams.find { it.stillAlive } ?: teams[0]
+        world.showTitle(
+            Title.title(
+                text("Team ")
+                    .append(winners.component())
+                    .append { text(" has won!").color(color(Color.YELLOW.asRGB())) },
+                text("Congratulations to " + winners.players.joinToString { it.name })
             )
-        }
+        )
         state = GameState.LOBBY
         winners.players.toList().forEach {
             leaveTeam(it)
@@ -177,7 +178,7 @@ class GameManager(val world: World) {
         if (removedFrom == null) return null
         player.inventory.clear()
         player.gameMode = GameMode.ADVENTURE
-        if (state == GameState.PLAYING && removedFrom.players.isEmpty()) {
+        if (state == GameState.PLAYING && !removedFrom.stillAlive) {
             world.sendMessage {
                 text("Team ")
                     .append(removedFrom.component())
@@ -230,7 +231,7 @@ class GameManager(val world: World) {
     fun getPlayerDeaths(player: Player) = player.scoreboard.getObjective("Deaths")!!.getScore(player)
 
     fun startGame() {
-        if (teams.filter { it.players.isNotEmpty() }.size < 2) {
+        if (teams.filter { it.stillAlive }.size < 2) {
             world.sendMessage { text("There must be at least two teams before starting game!") }
             return
         }
@@ -238,5 +239,7 @@ class GameManager(val world: World) {
     }
 
     // between -1f and 1f
-    fun getLuckOfPlayer(player: Player) = teams.find { it.players.contains(player) }?.targetLuck ?: 0f
+    fun getLuckOfPlayer(player: Player) = teamOf(player)?.targetLuck ?: 0f
+
+    fun teamOf(player: Player) = teams.find { it.players.contains(player) }
 }

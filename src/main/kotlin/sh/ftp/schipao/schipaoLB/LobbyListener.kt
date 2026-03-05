@@ -1,7 +1,6 @@
 package sh.ftp.schipao.schipaoLB
 
 import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -17,16 +16,20 @@ class LobbyListener : Listener {
 
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
-        event.player.teleport(Configuration.curr.spawnPos.toLocation(event.player.location.world))
+        if (GameManager.curr.state == GameManager.GameState.PLAYING
+            && GameManager.curr.teamOf(event.player) != null
+        ) return
+        event.player.teleport(Configuration.curr.spawnPos.toLocation(SchipaoLB.world))
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onPlayerQuit(event: PlayerQuitEvent) {
-        Bukkit.dispatchCommand(
-            Bukkit.getConsoleSender(),
-            "scoreboard players reset ${event.player.name} Deaths"
-        )
-        GameManager.curr.playerLeave(event.player)
+//        Bukkit.dispatchCommand(
+//            Bukkit.getConsoleSender(),
+//            "scoreboard players reset ${event.player.name} Deaths"
+//        )
+//        GameManager.curr.playerLeave(event.player)
+        GameManager.curr.checkGameFinished()
     }
 
     @EventHandler
