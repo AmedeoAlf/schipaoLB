@@ -96,7 +96,7 @@ class GameManager(val world: World) {
 
         // Between -1f and 1f
         val targetLuck: Float
-            get() = deathsLeft.toFloat() / (players.size * Configuration.curr.maxDeaths) * 2 - 1f
+            get() = -deathsLeft.toFloat() / (players.size * Configuration.curr.maxDeaths) * 2 + 1f
     }
 
     val teams = Configuration.curr
