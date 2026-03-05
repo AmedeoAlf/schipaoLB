@@ -221,6 +221,8 @@ class GameManager(val world: World) {
                         text("Be the last to reach ${Configuration.curr.maxDeaths} deaths"),
                     )
                 )
+                getPlayerDeaths(player).score = 0
+                player.enderChest.clear()
             }
         }
     }
