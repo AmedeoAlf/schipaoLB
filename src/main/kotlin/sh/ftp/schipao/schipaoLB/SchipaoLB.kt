@@ -40,7 +40,7 @@ class SchipaoLB : JavaPlugin() {
         log("Loaded outcomes")
         GameManager.curr = GameManager(server.respawnWorld)
         log("Initialized GameManager")
-        server.pluginManager.registerEvents(LBEventListener(Material.DRIED_KELP_BLOCK, outcomes), this)
+        server.pluginManager.registerEvents(LBEventListener(Material.DRIED_KELP_BLOCK, outcomes, GameManager.curr), this)
         server.pluginManager.registerEvents(worldProtector, this)
         server.pluginManager.registerEvents(LobbyListener(), this)
         log("Registered events")

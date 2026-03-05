@@ -90,9 +90,12 @@ class GameManager(val world: World) {
         val deathsLeft: Int
             get() = players.sumOf { Configuration.curr.maxDeaths - curr.getPlayerDeaths(it).score }
 
-        var previousLuck = 0f
         fun component() = text(dyeColor.name)
             .color(color(dyeColor.color.asRGB()))
+
+        // Between -1f and 1f
+        val targetLuck: Float
+            get() = deathsLeft.toFloat() / (players.size * Configuration.curr.maxDeaths) * 2 - 1f
     }
 
     val teams = Configuration.curr
@@ -230,4 +233,7 @@ class GameManager(val world: World) {
         }
         startGameNoChecks()
     }
+
+    // between -1f and 1f
+    fun getLuckOfPlayer(player: Player) = teams.find { it.players.contains(player) }?.targetLuck ?: 0f
 }

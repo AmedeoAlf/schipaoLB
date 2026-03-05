@@ -14,14 +14,13 @@ import org.bukkit.event.block.BlockExplodeEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityExplodeEvent
 import sh.ftp.schipao.schipaoLB.outcomes.LBOutcome
+import kotlin.math.pow
+import kotlin.random.Random
 
 @Suppress("UnstableApiUsage")
 val Block.position: BlockPosition get() = Position.block(x, y, z)
 
-class LBEventListener(val block: Material, val outcomes: Collection<LBOutcome>) : Listener {
-    val MAX_LUCK = outcomes.maxOf{ it.lucky }
-    val MIN_LUCK = outcomes.minOf{ it.lucky }
-
+class LBEventListener(val block: Material, val outcomes: List<LBOutcome>, val gameManager: GameManager) : Listener {
     @EventHandler(priority = EventPriority.HIGH)
     fun onBlockPlace(event: BlockPlaceEvent) {
         if (event.block.type == block) {
@@ -59,7 +58,23 @@ class LBEventListener(val block: Material, val outcomes: Collection<LBOutcome>) 
                 event.block.location, Sound.BLOCK_STONE_BREAK, 1f, 1f
             )
 
-            outcomes.random().run(event.player, event.block)
+            val luck = gameManager.getLuckOfPlayer(event.player)
+
+            var sumOfWeights = 0f
+            // Formula = b / (b + (x-a)^2)
+            // a = luck, b = 0.5
+            val weights = outcomes
+                .map {
+                    sumOfWeights += (0.5f / (0.5f + (it.lucky - luck).pow(2)))
+                    sumOfWeights
+                }
+
+            SchipaoLB.log("luck=$luck " + weights.joinToString())
+            val randomOutcome = weights
+                .binarySearch(Random.nextFloat() * sumOfWeights)
+                .let { if (it >= 0) it else -it - 1 }
+
+            outcomes[randomOutcome].run(event.player, event.block)
         }
     }
 }
