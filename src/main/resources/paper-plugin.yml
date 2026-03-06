@@ -2,3 +2,9 @@ name: schipaoLB
 version: '1.0-SNAPSHOT'
 main: sh.ftp.schipao.schipaoLB.SchipaoLB
 api-version: '1.21'
+dependencies:
+  server:
+    NBTAPI:
+      load: BEFORE
+      required: true
+      join-classpath: true
