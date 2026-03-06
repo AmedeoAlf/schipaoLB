@@ -39,7 +39,7 @@ object LBStructureManager {
 
     private fun parseBlocks(file: File) = NBT.getFileHandle(file)
         .getCompoundList("blocks")
-        .map { it.getIntArray("pos")!! }
+        .map { it.getIntegerList("pos")!! }
         .map { Position.block(it[0], it[1], it[2])}
 
 }
