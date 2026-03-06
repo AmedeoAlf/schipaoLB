@@ -38,14 +38,10 @@ class WorldProtector : Listener {
     class MutatedChunk {
         val blocks = mutableListOf<OverriddenBlock>()
 
-        fun addBlock(blockPosition: BlockPosition, data: BlockData) = blocks.add(
+        fun addBlock(blockPosition: BlockPosition, data: BlockData? = null) = blocks.add(
             OverriddenBlock(
                 blockPosition.chunkPosition(), data
             )
-        )
-
-        fun addEmpty(blockPosition: BlockPosition) = blocks.add(
-            OverriddenBlock(blockPosition.chunkPosition(), null)
         )
     }
 
@@ -88,7 +84,7 @@ class WorldProtector : Listener {
         if (world != SchipaoLB.world) return
         mutatedChunks.getOrPut(
             blockPosition.toLocation(world).chunk.chunkKey
-        ) { MutatedChunk() }.addEmpty(blockPosition)
+        ) { MutatedChunk() }.addBlock(blockPosition)
     }
 
     fun logCreation(block: Block) = logCreation(block.position, block.world)

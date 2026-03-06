@@ -1,10 +1,14 @@
+@file:Suppress("UnstableApiUsage")
+
 package sh.ftp.schipao.schipaoLB
 
 import io.papermc.paper.math.BlockPosition
+import io.papermc.paper.math.Position
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.DyeColor
 import org.bukkit.Material
+import org.bukkit.block.structure.StructureRotation
 
 fun parseQuantity(str: String, sep: String = "/"): Pair<String, Int> {
     try {
@@ -18,6 +22,13 @@ fun parseQuantity(str: String, sep: String = "/"): Pair<String, Int> {
 operator fun BlockPosition.component1() = blockX()
 operator fun BlockPosition.component2() = blockY()
 operator fun BlockPosition.component3() = blockZ()
+
+fun BlockPosition.rotated(rotation: StructureRotation) = when (rotation) {
+    StructureRotation.NONE -> this
+    StructureRotation.CLOCKWISE_90 -> Position.block(this.blockZ(),this.blockY(), -this.blockX())
+    StructureRotation.CLOCKWISE_180 -> Position.block(-this.blockX(),this.blockY(), -this.blockZ())
+    StructureRotation.COUNTERCLOCKWISE_90 -> Position.block(-this.blockZ(),this.blockY(), this.blockX())
+}
 
 fun Material.woolDyeColor() = when (this) {
     Material.WHITE_WOOL -> DyeColor.WHITE
