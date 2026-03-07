@@ -25,9 +25,9 @@ operator fun BlockPosition.component3() = blockZ()
 
 fun BlockPosition.rotated(rotation: StructureRotation) = when (rotation) {
     StructureRotation.NONE -> this
-    StructureRotation.CLOCKWISE_90 -> Position.block(this.blockZ(),this.blockY(), -this.blockX())
+    StructureRotation.CLOCKWISE_90 -> Position.block(-this.blockZ(),this.blockY(), this.blockX())
     StructureRotation.CLOCKWISE_180 -> Position.block(-this.blockX(),this.blockY(), -this.blockZ())
-    StructureRotation.COUNTERCLOCKWISE_90 -> Position.block(-this.blockZ(),this.blockY(), this.blockX())
+    StructureRotation.COUNTERCLOCKWISE_90 -> Position.block(this.blockZ(),this.blockY(), -this.blockX())
 }
 
 fun Material.woolDyeColor() = when (this) {
