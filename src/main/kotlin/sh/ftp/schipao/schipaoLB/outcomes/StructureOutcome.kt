@@ -2,17 +2,17 @@ package sh.ftp.schipao.schipaoLB.outcomes
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.bukkit.Material
 import org.bukkit.block.Block
-import org.bukkit.block.BlockState
 import org.bukkit.block.structure.Mirror
 import org.bukkit.block.structure.StructureRotation
 import org.bukkit.entity.Player
-import org.bukkit.generator.LimitedRegion
-import org.bukkit.util.BlockTransformer
 import sh.ftp.schipao.schipaoLB.LBStructureManager
 import sh.ftp.schipao.schipaoLB.SchipaoLB
+import sh.ftp.schipao.schipaoLB.component1
+import sh.ftp.schipao.schipaoLB.component2
+import sh.ftp.schipao.schipaoLB.component3
 import sh.ftp.schipao.schipaoLB.position
+import sh.ftp.schipao.schipaoLB.rotated
 import java.util.*
 
 @SerialName("structure")
@@ -27,6 +27,7 @@ class StructureOutcome(
     override val lucky: Float = 0f
 ) : LBOutcome {
 
+    @Suppress("UnstableApiUsage")
     override fun run(player: Player, block: Block) {
         val loadedStructure = LBStructureManager.getStructure(structure)
         if (loadedStructure == null) {
@@ -34,47 +35,31 @@ class StructureOutcome(
             return
         }
 
-        @Suppress("UnstableApiUsage")
-        val baseLocation = block.position
+        val originPoint = block.position
             .offset(offsetX, offsetY, offsetZ)
-            .toLocation(block.world)
 
         val rotationValue = if (rotation) StructureRotation.entries.toTypedArray().random()
         else StructureRotation.NONE
 
-        @Suppress("UnstableApiUsage")
+        LBStructureManager.getBlocks(structure)!!.forEach {
+            val (x, y, z) = it.rotated(rotationValue)
+            SchipaoLB.worldProtector.logRemoval(
+                block.world.getBlockAt(
+                    originPoint.blockX() + x,
+                    originPoint.blockY() + y,
+                    originPoint.blockZ() + z,
+                )
+            )
+        }
+
         loadedStructure.place(
-            baseLocation,
+            originPoint.toLocation(block.world),
             entities,
             rotationValue,
             Mirror.NONE,
             0,
             1.0f,
             Random(),
-            listOf(
-                object : BlockTransformer {
-                    override fun transform(
-                        region: LimitedRegion,
-                        x: Int,
-                        y: Int,
-                        z: Int,
-                        current: BlockState,
-                        state: BlockTransformer.TransformationState
-                    ): BlockState {
-                        val block = region.getBlockState(x, y, z).block
-                        if (block.isEmpty) {
-                            SchipaoLB.worldProtector.logCreation(block)
-                        } else {
-                            if (block.blockData.material == Material.BARRIER) {
-                                SchipaoLB.worldProtector.logRemoval(block,Material.AIR.createBlockData())
-                            } else {
-                                SchipaoLB.worldProtector.logRemoval(block)
-                            }
-                        }
-                        return current
-                    }
-                }
-            ),
-            listOf())
+        )
     }
 }
