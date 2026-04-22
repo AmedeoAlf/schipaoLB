@@ -64,7 +64,7 @@ Current loot tables synthax
       "items":[
          "<item name>/<quantity>;<display name>;<item lore>;<enchant>/<enchant level>;<item damage>",
          "CREEPER_SPAWN_EGG",
-         ""WOODEN_SWORD/1;;Buona Fortuna Soldato",
+         "WOODEN_SWORD/1;;Buona Fortuna Soldato",
          "SHIELD/1;Codardo",
          "BOW/1;;;minecraft:infinity/1",
          "TRIDENT/1;VAI POSEIDONE;;minecraft:loyalty/1",
